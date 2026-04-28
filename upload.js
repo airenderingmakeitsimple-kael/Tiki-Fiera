@@ -14,6 +14,7 @@ export default async function handler(request, response) {
     // Vercel Blob expects the body to be the file content
     const blob = await put(filename, request, {
       access: 'public',
+      token: process.env.BLOB_READ_WRITE_TOKEN,
     });
 
     return response.status(200).json(blob);
