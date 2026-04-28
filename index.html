@@ -1,0 +1,1416 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TIKI Fiera - Spesialis Pengiriman Hewan & Dokumen</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.98);
+            transition: all 0.3s ease;
+        }
+
+        .glass.scrolled {
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in-up {
+            opacity: 0;
+            animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .delay-100 {
+            animation-delay: 100ms;
+        }
+
+        .delay-200 {
+            animation-delay: 200ms;
+        }
+
+        .delay-300 {
+            animation-delay: 300ms;
+        }
+
+        .delay-400 {
+            animation-delay: 400ms;
+        }
+
+        .delay-500 {
+            animation-delay: 500ms;
+        }
+
+        .delay-600 {
+            animation-delay: 600ms;
+        }
+
+        .delay-700 {
+            animation-delay: 700ms;
+        }
+
+        .delay-800 {
+            animation-delay: 800ms;
+        }
+
+        .delay-900 {
+            animation-delay: 900ms;
+        }
+
+        .service-card {
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .service-card:hover {
+            transform: translateY(-12px) scale(1.02);
+            box-shadow: 0 25px 50px -12px rgba(0, 84, 166, 0.15);
+        }
+
+        /* Menyembunyikan Scrollbar pada Carousel */
+        #adCarouselContainer::-webkit-scrollbar,
+        #testiCarousel::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* 3D Carousel Styles */
+        .carousel-view {
+            perspective: 1500px;
+            height: 450px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: visible;
+            position: relative;
+        }
+
+        .carousel-container {
+            width: 280px;
+            height: 300px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;
+            z-index: 100;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            background: rgba(59, 130, 246, 0.3);
+            border-color: rgba(59, 130, 246, 0.5);
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+            scale: 1.1;
+        }
+
+        .nav-btn.prev {
+            left: -80px;
+        }
+
+        .nav-btn.next {
+            right: -80px;
+        }
+
+        @media (max-width: 1024px) {
+            .nav-btn.prev {
+                left: 5px;
+            }
+
+            .nav-btn.next {
+                right: 5px;
+            }
+        }
+
+        .carousel-item {
+            position: absolute;
+            width: 280px;
+            height: 300px;
+            left: 0;
+            top: 0;
+            background: rgba(10, 4, 82, 0.181);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            backface-visibility: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transition: all 0.5s ease;
+        }
+
+        .carousel-item:hover {
+            border-color: rgba(59, 130, 246, 0.5);
+            box-shadow: 0 0 30px rgba(59, 130, 246, 0.2);
+        }
+
+        .carousel-item.active {
+            border-color: rgba(59, 130, 246, 0.9);
+            box-shadow: 0 0 40px rgba(59, 130, 246, 0.7), inset 0 0 20px rgba(59, 130, 246, 0.3);
+            background: rgba(10, 4, 82, 0.4);
+            transform: scale(1.05);
+        }
+
+        .carousel-item img {
+            max-height: 90px;
+            margin-bottom: 1rem;
+            filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.1));
+        }
+
+        /* Section Backgrounds */
+        .premium-bg {
+            background: radial-gradient(circle at center, #022456 0%, #030f41 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .premium-bg::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            top: -50%;
+            left: -50%;
+            background-image:
+                radial-gradient(2px 2px at 20px 30px, #eee, rgba(0, 0, 0, 0)),
+                radial-gradient(2px 2px at 40px 70px, #fff, rgba(0, 0, 0, 0)),
+                radial-gradient(2px 2px at 50px 160px, #ddd, rgba(0, 0, 0, 0));
+            background-repeat: repeat;
+            background-size: 200px 200px;
+            opacity: 0.1;
+            animation: stars 100s linear infinite;
+        }
+
+        @keyframes stars {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .glow-ring {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotateX(75deg);
+            width: 1000px;
+            height: 1000px;
+            border: 2px solid rgba(37, 99, 235, 0.2);
+            border-radius: 50%;
+            box-shadow: 0 0 50px rgba(37, 99, 235, 0.2), inset 0 0 50px rgba(37, 99, 235, 0.1);
+            pointer-events: none;
+        }
+
+        /* Premium Slider Transitions */
+        .banner-content {
+            transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .banner-fade-out {
+            opacity: 0;
+            transform: translateX(-20px);
+        }
+
+        .banner-fade-in {
+            opacity: 0;
+            transform: translateX(20px);
+        }
+
+        .indicator-capsule {
+            transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        /* Marquee Styles */
+        .marquee-container {
+            mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+            -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+            cursor: grab;
+            user-select: none;
+            touch-action: pan-y;
+        }
+
+        .marquee-container:active {
+            cursor: grabbing;
+        }
+
+        .marquee-content {
+            display: flex;
+            width: fit-content;
+            will-change: transform;
+        }
+
+        .premium-card {
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.5s ease;
+            pointer-events: auto;
+        }
+
+        .premium-card:hover {
+            transform: scale(1.05) translateY(-10px);
+            box-shadow: 0 25px 50px -12px rgba(0, 84, 166, 0.15);
+            z-index: 50;
+        }
+
+        /* Elite Swipe Animations */
+        @keyframes eliteFadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        @keyframes kenBurns {
+            0% {
+                transform: scale(1.1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+
+            100% {
+                transform: scale(1.1);
+            }
+        }
+
+        .elite-fade-out {
+            opacity: 0;
+            transform: scale(1.05);
+            filter: blur(10px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .stagger-entry {
+            animation: eliteFadeUp 1s cubic-bezier(0.215, 0.61, 0.355, 1) forwards;
+        }
+
+        .stagger-1 {
+            animation-delay: 0.1s;
+        }
+
+        .stagger-2 {
+            animation-delay: 0.2s;
+        }
+
+        .stagger-3 {
+            animation-delay: 0.3s;
+        }
+
+        .stagger-4 {
+            animation-delay: 0.4s;
+        }
+
+        .ken-burns-active {
+            animation: kenBurns 15s ease-in-out infinite;
+        }
+
+        .blue-glow {
+            box-shadow: 0 0 30px rgba(37, 99, 235, 0.4);
+        }
+
+        /* Curtain Mask Animation */
+        .curtain-reveal {
+            clip-path: inset(0 0 0 100%);
+            transition: clip-path 0.8s cubic-bezier(0.76, 0, 0.24, 1);
+        }
+
+        .curtain-reveal.active {
+            clip-path: inset(0 0 0 0%);
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 text-slate-900">
+
+    <nav id="navbar" class="sticky top-0 z-50 glass border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-6 h-28 flex items-center justify-between">
+            <div class="flex items-center">
+                <img src="asset/logofiera2.png" alt="TIKI Fiera Logo" class="h-24 w-auto object-contain">
+            </div>
+
+            <div class="flex items-center gap-3">
+                <a href="https://wa.me/6281291498070"
+                    class="bg-green-500 text-white p-3 rounded-full hover:bg-green-600 transition shadow-lg hover:scale-110"
+                    title="Hubungi Kami">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                        <path
+                            d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.588-5.946 0-6.556 5.332-11.891 11.893-11.891 3.181 0 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.481 8.403 0 6.556-5.332 11.893-11.891 11.893-2.007 0-3.974-.511-5.717-1.482l-6.279 1.698zm6.232-4.105l.35.207c1.482.881 3.193 1.346 4.954 1.346 5.179 0 9.397-4.218 9.397-9.393 0-2.517-.98-4.883-2.76-6.662-1.781-1.78-4.147-2.761-6.637-2.761-5.18 0-9.397 4.218-9.397 9.394 0 1.765.49 3.487 1.417 4.981l.228.369-1.04 3.799 3.892-1.054z" />
+                    </svg>
+                </a>
+
+                <button onclick="shareWebsite()"
+                    class="bg-blue-600 text-white p-3 rounded-full hover:bg-blue-700 transition shadow-lg hover:scale-110"
+                    title="Bagikan Link">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z">
+                        </path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <section class="relative text-white py-20 px-4 overflow-hidden shadow-2xl">
+        <div class="absolute inset-0 z-0">
+            <img src="asset/backgroundtiki.png" alt="Background" class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-blue-900/40 border-y border-white/10"></div>
+        </div>
+        <div class="max-w-4xl mx-auto text-center relative z-10">
+            <h1 class="text-3xl md:text-5xl font-bold mb-4 leading-tight">Lebih Dari Sekadar Pengiriman. Kami Menjaga
+                Kepercayaan Anda</h1>
+            <p class="text-blue-100 mb-8 text-lg">Agen Resmi TIKI Fiera, Kirim Reptil, Ikan, & Dokumen Berharga Tanpa
+                Rasa Cemas.</p>
+
+            <div class="bg-white p-2 rounded-2xl shadow-2xl max-w-md mx-auto flex">
+                <input type="text" placeholder="Masukkan Nomor Resi TIKI"
+                    class="flex-1 px-4 py-3 text-slate-900 outline-none rounded-l-xl">
+                <button onclick="window.open('https://tiki.id/id/track', '_blank')"
+                    class="bg-yellow-400 text-blue-900 px-6 py-3 font-bold rounded-xl hover:bg-yellow-300 transition">Lacak</button>
+            </div>
+        </div>
+    </section>
+
+    <section id="layanan" class="py-32 premium-bg relative">
+        <div class="glow-ring"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center mb-20 fade-in-up">
+                <h2 class="text-white text-5xl font-extrabold mb-6">Layanan Kami</h2>
+                <div class="w-24 h-1 bg-blue-600 mx-auto rounded-full"></div>
+            </div>
+
+            <div class="carousel-view">
+                <button class="nav-btn prev" onclick="rotateCarousel('prev')" aria-label="Previous">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                    </svg>
+                </button>
+
+                <div class="carousel-container" id="carousel">
+                    <!-- Carousel items will be placed here -->
+                    <!-- 1. ONS -->
+                    <div class="carousel-item" style="transform: rotateY(0deg) translateZ(450px);">
+                        <img src="asset/ons.png" alt="ONS">
+                        <h3 class="text-lg font-bold text-white mb-2">Over Night Service(ONS)</h3>
+                        <p class="text-blue-100/70 text-center text-xs">Kirim hari ini, esok akan tiba di tujuan Anda.
+                        </p>
+                        <div
+                            class="mt-4 px-3 py-1 bg-blue-600/30 rounded-full text-blue-400 text-[10px] font-bold border border-blue-500/30">
+                            Cepat Sampai</div>
+                    </div>
+                    <!-- 2. REG -->
+                    <div class="carousel-item" style="transform: rotateY(40deg) translateZ(450px);">
+                        <img src="asset/reg.png" alt="Regular">
+                        <h3 class="text-lg font-bold text-white mb-2">Regular Service (R3G)</h3>
+                        <p class="text-blue-100/70 text-center text-xs">Kiriman tiba dalam waktu sekitar 3 hari kerja.
+                        </p>
+                    </div>
+                    <!-- 3. ECO -->
+                    <div class="carousel-item" style="transform: rotateY(80deg) translateZ(450px);">
+                        <img src="asset/eco.png" alt="Economy">
+                        <h3 class="text-lg font-bold text-white mb-2">Economy Service (ECO)</h3>
+                        <p class="text-blue-100/70 text-center text-xs">Pengiriman dengan biaya hemat dan bersahabat.
+                        </p>
+                    </div>
+                    <!-- 4. TRC -->
+                    <div class="carousel-item" style="transform: rotateY(120deg) translateZ(450px);">
+                        <img src="asset/trc.png" alt="Trucking">
+                        <h3 class="text-lg font-bold text-white mb-2">Trucking Service (TRC)</h3>
+                        <p class="text-blue-100/70 text-center text-xs">Layanan pengiriman kargo minimal 10 Kg.</p>
+                    </div>
+                    <!-- 5. INT -->
+                    <div class="carousel-item" style="transform: rotateY(160deg) translateZ(450px);">
+                        <img src="asset/int.png" alt="International">
+                        <h3 class="text-lg font-bold text-white mb-2">International Service (INT)</h3>
+                        <p class="text-blue-100/70 text-center text-xs">Layanan pengiriman ke luar negeri.</p>
+                    </div>
+                    <!-- 6. FRZ -->
+                    <div class="carousel-item" style="transform: rotateY(200deg) translateZ(450px);">
+                        <img src="asset/frz.png" alt="Froozy">
+                        <h3 class="text-lg font-bold text-white mb-2">Frozen Delivery (FRZ)</h3>
+                        <p class="text-blue-100/70 text-center text-xs">Produk kiriman makanan beku hari yang sama.</p>
+                    </div>
+                    <!-- 7. SRP -->
+                    <div class="carousel-item" style="transform: rotateY(240deg) translateZ(450px);">
+                        <img src="asset/srp.png" alt="Fish">
+                        <h3 class="text-lg font-bold text-white mb-2">Fish Delivery (SRP)</h3>
+                        <p class="text-blue-100/70 text-center text-xs">Solusi kiriman ikan hias maksimal 3 hari.</p>
+                    </div>
+                    <!-- 8. TRX -->
+                    <div class="carousel-item" style="transform: rotateY(280deg) translateZ(450px);">
+                        <img src="asset/trx.png" alt="Reptile">
+                        <h3 class="text-lg font-bold text-white mb-2">Reptile Delivery (TRX)</h3>
+                        <p class="text-blue-100/70 text-center text-xs">Pengiriman reptil tidak berbisa jalur darat.</p>
+                    </div>
+                    <!-- 9. DAT -->
+                    <div class="carousel-item" style="transform: rotateY(320deg) translateZ(450px);">
+                        <img src="asset/dat.png" alt="Plants">
+                        <h3 class="text-lg font-bold text-white mb-2">Plants & Fruits (DAT)</h3>
+                        <p class="text-blue-100/70 text-center text-xs">Kiriman tanaman and buah-buahan maksimal 6 hari.
+                        </p>
+                    </div>
+                </div>
+
+                <button class="nav-btn next" onclick="rotateCarousel('next')" aria-label="Next">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    </svg>
+                </button>
+            </div>
+
+            <!-- "Kenapa Pilih Kami?" Integrated within premium background -->
+            <div class="mt-32 pt-20 border-t border-white/5">
+                <div class="text-center mb-16 fade-in-up">
+                    <h2 class="text-white text-4xl font-bold mb-4">Kenapa Pilih Kami?</h2>
+                    <div class="w-16 h-1 bg-blue-500 mx-auto rounded-full"></div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+                    <div class="text-center group fade-in-up delay-100">
+                        <div
+                            class="w-20 h-20 bg-blue-600/20 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform border border-blue-500/20">
+                            <svg class="w-10 h-10 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                    d="M13 10V3L4 14h7v7l9-11h-7z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">Pengiriman Cepat</h3>
+                        <p class="text-blue-100/60">Antar cepat sampai tujuan tanpa drama.</p>
+                    </div>
+
+                    <div class="text-center group fade-in-up delay-200">
+                        <div
+                            class="w-20 h-20 bg-emerald-600/20 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform border border-emerald-500/20">
+                            <svg class="w-10 h-10 text-emerald-400" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                    d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">Aman & Terpercaya</h3>
+                        <p class="text-blue-100/60">Paket Anda dijamin aman sampai tangan penerima.</p>
+                    </div>
+
+                    <div class="text-center group fade-in-up delay-300">
+                        <div
+                            class="w-20 h-20 bg-yellow-600/20 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform border border-yellow-500/20">
+                            <svg class="w-10 h-10 text-yellow-400" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                    d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">Harga Terjangkau</h3>
+                        <p class="text-blue-100/60">Ongkos kirim bersaing untuk semua layanan.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Seksi Banner Iklan Premium (Elite Swipe) -->
+    <section class="py-24 relative bg-gray-50 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 relative">
+
+            <div id="heroPremiumBanner" onmouseenter="pauseBannerAutoplay()" onmouseleave="startBannerAutoplay()"
+                class="relative overflow-hidden bg-[#051124] rounded-[4rem] border border-white/5 shadow-2xl transition-all h-[550px] md:h-[600px] group/banner">
+                <!-- Adaptive Accent Glow -->
+                <div id="bannerAccentGlow"
+                    class="absolute -inset-4 blur-[120px] opacity-20 bg-gradient-to-r from-blue-600 to-cyan-500 transition-all duration-1000">
+                </div>
+
+                <div id="bannerContentWrap"
+                    class="banner-content flex flex-col md:flex-row items-center h-full relative z-10">
+                    <!-- Left: Content Area -->
+                    <div class="w-full md:w-3/5 p-10 md:p-20">
+                        <div id="displayBannerTagContainer" class="opacity-0">
+                            <span id="displayBannerTagText"
+                                class="text-emerald-400 font-bold tracking-[0.4em] text-[10px] uppercase block mb-8">PROMO
+                                SPESIAL</span>
+                        </div>
+
+                        <h2 id="displayBannerTitleContainer" class="opacity-0 leading-tight mb-8">
+                            <span id="displayBannerJudul1"
+                                class="text-4xl md:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">LOADING</span>
+                            <br />
+                            <span id="displayBannerJudul2"
+                                class="text-3xl md:text-6xl font-black text-white">CAROUSEL...</span>
+                        </h2>
+
+                        <p id="displayBannerDeskripsi"
+                            class="opacity-0 text-slate-400 text-lg md:text-xl mb-12 max-w-md leading-relaxed">
+                            Sedang memuat data promo eksklusif untuk Anda.
+                        </p>
+
+                        <!-- Action Buttons -->
+                        <div id="displayBannerBtns" class="opacity-0 flex flex-wrap gap-6">
+                            <a id="displayBannerWaLink" href="#" target="_blank"
+                                class="bg-blue-600 hover:bg-blue-500 text-white px-10 py-5 rounded-2xl font-bold transition-all blue-glow active:scale-95 text-lg">
+                                Hubungi Admin
+                            </a>
+                            <a id="displayBannerMapsLink" href="#" target="_blank"
+                                class="bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10 px-10 py-5 rounded-2xl font-bold transition-all text-lg">
+                                Cek Lokasi
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Right: Image Area -->
+                    <div class="hidden md:block w-2/5 h-full p-8">
+                        <div id="displayBannerImageWrap"
+                            class="relative w-full h-full rounded-[3rem] overflow-hidden border border-white/10 shadow-2xl">
+                            <img id="displayBannerImage" src="asset/ons_promo.png" alt="Promo"
+                                class="w-full h-full object-contain ken-burns-active" />
+                            <div
+                                class="absolute inset-0 bg-gradient-to-t from-[#051124]/80 via-transparent to-transparent">
+                            </div>
+                            <div
+                                class="absolute top-8 left-8 bg-[#051124]/40 backdrop-blur-xl border border-white/20 px-5 py-2 rounded-full text-[10px] font-bold text-white tracking-widest uppercase flex items-center gap-2">
+                                <span class="flex h-2 w-2 relative">
+                                    <span
+                                        class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                                    <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                                </span>
+                                Verified Promo
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Elite Indicators (Bottom Right) -->
+                <div class="absolute bottom-12 right-12 md:right-20 flex items-center gap-4 z-30">
+                    <div id="bannerIndicators" class="flex gap-3">
+                        <!-- Dynamically generated indicators -->
+                    </div>
+                    <div class="flex gap-2 ml-4 border-l border-white/10 pl-6">
+                        <button onclick="rotateBanner('prev')" class="text-white/40 hover:text-white transition-colors">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M15 19l-7-7 7-7" />
+                            </svg>
+                        </button>
+                        <button onclick="rotateBanner('next')" class="text-white/40 hover:text-white transition-colors">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 5l7 7-7 7" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="py-24 bg-white border-b border-gray-100 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
+            <div class="flex flex-col md:flex-row justify-between items-end gap-6">
+                <div>
+                    <span class="text-blue-600 font-bold tracking-wider uppercase text-sm mb-2 block">Jaringan
+                        Bisnis</span>
+                    <h2 class="text-4xl md:text-5xl font-black text-slate-900 tracking-tight">Mitra & UMKM Kami</h2>
+                    <p class="mt-4 text-slate-500 max-w-2xl text-lg">Dukung bisnis lokal pilihan yang telah
+                        mempercayakan logistiknya bersama TIKI Fiera.</p>
+                </div>
+                <a href="https://wa.me/6281291498070?text=Halo%20TIKI%20Fiera,%20saya%20mau%20pasang%20iklan%20bisnis%20saya."
+                    class="inline-flex items-center px-8 py-4 text-base font-bold rounded-2xl text-blue-600 bg-blue-50 hover:bg-blue-600 hover:text-white transition-all shadow-sm hover:shadow-md">
+                    + Pasang Iklan Bisnis Anda
+                </a>
+            </div>
+        </div>
+
+        <!-- Infinite Marquee Container -->
+        <div class="marquee-container relative">
+            <div id="mitraMarquee" class="marquee-content gap-6 py-6">
+                <!-- Dirender via Javascript dari LocalStorage (Dugulirkan 2x untuk loop) -->
+            </div>
+        </div>
+    </section>
+
+    <section class="py-20 bg-[#59595b]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            <div class="flex flex-col sm:flex-row justify-between items-end mb-10 gap-6">
+                <div>
+                    <h2 class="text-3xl md:text-4xl font-extrabold text-white tracking-tight">Pengalaman Pelanggan</h2>
+                    <p class="mt-2 text-gray-300 text-lg">Cerita nyata dari mereka yang mempercayakan kirimannya kepada
+                        TIKI Fiera.</p>
+                </div>
+
+                <div class="flex gap-3">
+                    <button id="prevExpBtn"
+                        class="w-12 h-12 rounded-full bg-white/20 hover:bg-white text-white hover:text-gray-900 flex items-center justify-center transition-all shadow-lg backdrop-blur-sm">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                        </svg>
+                    </button>
+                    <button id="nextExpBtn"
+                        class="w-12 h-12 rounded-full bg-white/20 hover:bg-white text-white hover:text-gray-900 flex items-center justify-center transition-all shadow-lg backdrop-blur-sm">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <div id="experienceCarousel"
+                class="flex gap-6 overflow-x-auto snap-x snap-mandatory pb-8 pt-4 scroll-smooth"
+                style="scrollbar-width: none; -ms-overflow-style: none;">
+
+                <div
+                    class="w-[320px] h-[320px] snap-center shrink-0 bg-[#737373] rounded-3xl p-2.5 shadow-2xl hover:-translate-y-2 transition-transform duration-300">
+                    <div class="bg-[#1f1f1f] rounded-[1.25rem] overflow-hidden h-full flex flex-col">
+                        <div class="h-1/2 relative bg-gray-800">
+                            <img src="https://via.placeholder.com/400x300/ff6b6b/ffffff?text=Foto+Pelanggan"
+                                alt="Testimoni" class="w-full h-full object-cover" />
+                        </div>
+                        <div class="p-4 flex-1 flex items-center justify-center text-center">
+                            <p class="text-white font-bold text-base leading-snug">
+                                "Kirim reptil ke luar pulau sangat aman. Packing rapi dan hewan sampai dengan sehat!"
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    class="w-[320px] h-[320px] snap-center shrink-0 bg-[#737373] rounded-3xl p-2.5 shadow-2xl hover:-translate-y-2 transition-transform duration-300">
+                    <div class="bg-[#1f1f1f] rounded-[1.25rem] overflow-hidden h-full flex flex-col">
+                        <div class="h-1/2 relative bg-gray-800">
+                            <img src="https://via.placeholder.com/400x300/4ecdc4/ffffff?text=Foto+Kopi" alt="Testimoni"
+                                class="w-full h-full object-cover" />
+                        </div>
+                        <div class="p-4 flex-1 flex items-center justify-center text-center">
+                            <p class="text-white font-bold text-base leading-snug">
+                                "Layanan ONS sangat krusial untuk suplai biji kopi kedai kami. TIKI Fiera selalu tepat
+                                waktu!"
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    class="w-[320px] h-[320px] snap-center shrink-0 bg-[#737373] rounded-3xl p-2.5 shadow-2xl hover:-translate-y-2 transition-transform duration-300">
+                    <div class="bg-[#1f1f1f] rounded-[1.25rem] overflow-hidden h-full flex flex-col">
+                        <div class="h-1/2 relative bg-gray-800">
+                            <img src="https://via.placeholder.com/400x300/feca57/ffffff?text=Foto+Dokumen"
+                                alt="Testimoni" class="w-full h-full object-cover" />
+                        </div>
+                        <div class="p-4 flex-1 flex items-center justify-center text-center">
+                            <p class="text-white font-bold text-base leading-snug">
+                                "Asuransi penuh untuk pengiriman dokumen berharga membuat kami tidak pernah was-was."
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    class="w-[320px] h-[320px] snap-center shrink-0 bg-[#737373] rounded-3xl p-2.5 shadow-2xl hover:-translate-y-2 transition-transform duration-300">
+                    <div class="bg-[#1f1f1f] rounded-[1.25rem] overflow-hidden h-full flex flex-col">
+                        <div class="h-1/2 relative bg-gray-800">
+                            <img src="https://via.placeholder.com/400x300/48dbfb/ffffff?text=Foto+Vegan+Food"
+                                alt="Testimoni" class="w-full h-full object-cover" />
+                        </div>
+                        <div class="p-4 flex-1 flex items-center justify-center text-center">
+                            <p class="text-white font-bold text-base leading-snug">
+                                "Frozen food kami selalu tiba dalam kondisi beku sempurna berkat standar packing TIKI
+                                Fiera."
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section class="bg-slate-900 text-white py-20 px-4">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-12">
+            <!-- New Brand Image Column -->
+            <div class="w-full md:w-1/4 flex justify-center md:justify-start">
+                <div class="h-64 flex items-center justify-center">
+                    <img src="asset/tikifiera.png" alt="TIKI Fiera Mascot"
+                        class="h-full w-auto object-contain hover:scale-105 transition-transform duration-500">
+                </div>
+            </div>
+
+            <!-- Location Text Column -->
+            <div class="flex-1 text-center md:text-left">
+                <h2 class="text-4xl font-extrabold mb-6 tracking-tight">Lokasi</h2>
+                <p class="text-slate-400 mb-8 text-lg leading-relaxed">Tiki Fiera, Pondok Kacang Barat. Kami siap
+                    melayani pengiriman
+                    domestik & internasional.</p>
+                <div class="space-y-4 text-sm md:text-base inline-block md:block text-left">
+                    <p class="flex items-center gap-3 text-slate-300">
+                        <span
+                            class="w-6 h-6 rounded-full bg-blue-600/20 flex items-center justify-center text-blue-400 text-xs">📍</span>
+                        Pd. Kacang Bar., Kec. Pd. Aren, Tangsel
+                    </p>
+                    <p class="flex items-center gap-3 text-slate-300">
+                        <span
+                            class="w-6 h-6 rounded-full bg-blue-600/20 flex items-center justify-center text-blue-400 text-xs">⏰</span>
+                        Senin - Jumat: 10.00 - 18.30
+                    </p>
+                    <p class="flex items-center gap-3 text-slate-300">
+                        <span
+                            class="w-6 h-6 rounded-full bg-blue-600/20 flex items-center justify-center text-blue-400 text-xs">⏰</span>
+                        Sabtu: 09.00 - 15.00
+                    </p>
+                    <p class="flex items-center gap-3 text-slate-300">
+                        <span
+                            class="w-6 h-6 rounded-full bg-red-600/20 flex items-center justify-center text-red-400 text-xs">⏰</span>
+                        Minggu: <span class="text-red-400 font-bold uppercase tracking-wider">Tutup</span>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Map & Footer Info Column -->
+            <div class="w-full md:w-1/3 flex flex-col gap-4">
+                <div
+                    class="h-64 bg-slate-800 rounded-3xl overflow-hidden grayscale opacity-90 hover:grayscale-0 transition-all duration-700 border border-white/5 shadow-2xl">
+                    <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.062309015396!2d106.6887835!3d-6.255522000000001!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69fb2a122fb191%3A0xbe25d0c291d04f5e!2sTiki%20Fiera-Graha%20Raya!5e0!3m2!1sid!2sid!4v1775489002449!5m2!1sid!2sid"
+                        width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                </div>
+
+                <!-- Integrated Footer Info -->
+                <div class="flex flex-col items-center sm:items-start px-2 gap-2">
+                    <p class="text-slate-500 text-[10px] tracking-wide">© 2026 TIKI Fiera. All rights reserved.</p>
+                    <div class="flex items-center gap-2 text-slate-500 text-[10px]">
+                        <span class="opacity-50">Powered by</span>
+                        <a href="#" class="group">
+                            <img src="asset/ulink.png" alt="My.U-link" id="adminSecretDoorLocation"
+                                class="h-4 opacity-40 group-hover:opacity-100 transition-opacity select-none"
+                                title="Smart Digital System">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <script>
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 20) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        let currentRotation = 0;
+        let activeIndex = 0;
+        const totalItems = 9;
+
+        function updateActiveCard() {
+            const items = document.querySelectorAll('.carousel-item');
+            items.forEach((item, index) => {
+                if (index === activeIndex) {
+                    item.classList.add('active');
+                } else {
+                    item.classList.remove('active');
+                }
+            });
+        }
+
+        // Setup initial active card
+        updateActiveCard();
+
+        function rotateCarousel(direction) {
+            const carousel = document.getElementById('carousel');
+            if (direction === 'next') {
+                currentRotation -= 40;
+                activeIndex = (activeIndex + 1) % totalItems;
+            } else {
+                currentRotation += 40;
+                activeIndex = (activeIndex - 1 + totalItems) % totalItems;
+            }
+            carousel.style.transform = `rotateY(${currentRotation}deg)`;
+            updateActiveCard();
+        }
+
+        // --- FITUR DRAG & SNAP CAROUSEL 3D ---
+        const carouselView = document.querySelector('.carousel-view');
+        const carouselContainer = document.getElementById('carousel');
+        let isDragging3D = false;
+        let startX3D, currentX3D;
+        let rotationOnStart3D = 0;
+
+        if (carouselView && carouselContainer) {
+            carouselView.addEventListener('mousedown', dragStart3D);
+            carouselView.addEventListener('touchstart', dragStart3D, { passive: true });
+
+            window.addEventListener('mousemove', dragging3D);
+            window.addEventListener('touchmove', dragging3D, { passive: true });
+
+            window.addEventListener('mouseup', dragEnd3D);
+            window.addEventListener('touchend', dragEnd3D);
+        }
+
+        function dragStart3D(e) {
+            isDragging3D = true;
+            startX3D = e.pageX || (e.touches && e.touches[0].pageX);
+            rotationOnStart3D = currentRotation;
+            carouselContainer.style.transition = 'none';
+        }
+
+        function dragging3D(e) {
+            if (!isDragging3D) return;
+            currentX3D = e.pageX || (e.touches && e.touches[0].pageX);
+            const diff = currentX3D - startX3D;
+            const moveRotation = rotationOnStart3D + (diff * 0.2);
+            carouselContainer.style.transform = `rotateY(${moveRotation}deg)`;
+        }
+
+        function dragEnd3D() {
+            if (!isDragging3D) return;
+            isDragging3D = false;
+            carouselContainer.style.transition = 'transform 0.8s cubic-bezier(0.23, 1, 0.32, 1)';
+
+            const transformStr = carouselContainer.style.transform;
+            const actualRotation = parseFloat(transformStr.replace('rotateY(', '').replace('deg)', '')) || 0;
+
+            currentRotation = Math.round(actualRotation / 40) * 40;
+
+            activeIndex = Math.abs((currentRotation / 40) % totalItems);
+            if (currentRotation > 0) activeIndex = (totalItems - activeIndex) % totalItems;
+
+            carouselContainer.style.transform = `rotateY(${currentRotation}deg)`;
+            updateActiveCard();
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const expCarousel = document.getElementById('experienceCarousel');
+            const prevExpBtn = document.getElementById('prevExpBtn');
+            const nextExpBtn = document.getElementById('nextExpBtn');
+
+            if (expCarousel && prevExpBtn && nextExpBtn) {
+                // Jarak geser dihitung dari: lebar w-[320px] + gap-6 (24px)
+                const scrollExpAmount = 344;
+
+                nextExpBtn.addEventListener('click', () => {
+                    expCarousel.scrollBy({ left: scrollExpAmount, behavior: 'smooth' });
+                });
+
+                prevExpBtn.addEventListener('click', () => {
+                    expCarousel.scrollBy({ left: -scrollExpAmount, behavior: 'smooth' });
+                });
+            }
+
+            const promoCarousel = document.getElementById('promoCarousel');
+            const prevPromoBtn = document.getElementById('prevPromoBtn');
+            const nextPromoBtn = document.getElementById('nextPromoBtn');
+            // If you add multiple promos in the future, you can implement scroll logic here similar to above.
+        });
+    </script>
+    <footer class="bg-slate-900 border-t border-slate-800 py-6">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <div class="w-10 h-1 bg-slate-800 mx-auto rounded-full mb-4"></div>
+            <p class="text-slate-600 text-[10px] uppercase tracking-[0.3em]">Terima Kasih Telah Memilih TIKI Fiera</p>
+        </div>
+    </footer>
+
+    <script>
+        // 1. Data Iklan Premium (Banner Slider)
+        const premiumAds = [
+            {
+                id: 1,
+                accentColor: "from-blue-500 to-cyan-400",
+                tag: "PROMO SPESIAL",
+                title: "Diskon 50% Kiriman ONS",
+                description: "Kirim paket kilat satu hari sampai dengan harga setengahnya. Spesialis dokumen & hewan.",
+                stats: [{ label: "Min. Berat", value: "5 KG" }, { label: "Berakhir", value: "30 NOV" }],
+                image: "asset/ons_promo.png",
+                waLink: "https://wa.me/6281291498070?text=Halo%20Admin%20TIKI%20Fiera,%20tanya%20promo%20ONS",
+                mapLink: "https://maps.google.com/?q=TIKI+Fiera+Tangerang"
+            },
+            {
+                id: 2,
+                accentColor: "from-emerald-500 to-teal-400",
+                tag: "LAYANAN REPTIL",
+                title: "Kirim Aman Tanpa Cemas",
+                description: "Layanan pengiriman hewan melata dengan standar keamanan tinggi dan legalitas terjamin.",
+                stats: [{ label: "Jalur", value: "Darat" }, { label: "Est.", value: "3-4 Hari" }],
+                image: "asset/trx.png",
+                waLink: "https://wa.me/6281291498070?text=Halo%20Admin%20TIKI%20Fiera,%20tanya%20kirim%20reptil",
+                mapLink: "https://maps.google.com/?q=TIKI+Fiera+Tangerang"
+            }
+        ];
+
+        // 2. Data Iklan UMKM (Partners Grid)
+        const dataIklanUMKM = []; // Kosongkan agar data hanya diambil dari Admin (localStorage)
+
+        let currentBannerIndex = 0;
+        let activeBanners = [...premiumAds];
+        let bannerAutoplayInterval = null;
+
+        function startBannerAutoplay() {
+            clearBannerAutoplay();
+            // Berpindah setiap 7 detik agar lebih nyaman dibaca
+            bannerAutoplayInterval = setInterval(() => {
+                rotateBanner('next');
+            }, 7000);
+        }
+
+        function pauseBannerAutoplay() {
+            clearBannerAutoplay();
+        }
+
+        function clearBannerAutoplay() {
+            if (bannerAutoplayInterval) {
+                clearInterval(bannerAutoplayInterval);
+                bannerAutoplayInterval = null;
+            }
+        }
+
+        function rotateBanner(direction) {
+            const banner = document.getElementById('heroPremiumBanner');
+            const wrap = document.getElementById('bannerContentWrap');
+            if (!banner || !wrap) return;
+
+            // Reset Autoplay on manual interaction
+            clearBannerAutoplay();
+
+            // Trigger elite fade out
+            wrap.classList.add('elite-fade-out');
+
+            setTimeout(() => {
+                if (direction === 'next') {
+                    currentBannerIndex = (currentBannerIndex + 1) % activeBanners.length;
+                } else if (typeof direction === 'number') {
+                    currentBannerIndex = direction;
+                } else {
+                    currentBannerIndex = (currentBannerIndex - 1 + activeBanners.length) % activeBanners.length;
+                }
+
+                renderActiveBanner();
+
+                // Remove fade out and trigger entry
+                wrap.classList.remove('elite-fade-out');
+
+                // Resume autoplay if not hovering
+                if (!banner.matches(':hover')) {
+                    startBannerAutoplay();
+                }
+            }, 800);
+        }
+
+        function renderActiveBanner() {
+            const ad = activeBanners[currentBannerIndex];
+            if (!ad) return;
+
+            // Helper for text and attributes
+            const setText = (id, val) => { const el = document.getElementById(id); if (el) el.innerText = val; };
+            const setAttr = (id, attr, val) => { const el = document.getElementById(id); if (el) el[attr] = val; };
+
+            // 1. Accent & Glow
+            const accent = document.getElementById('bannerAccentGlow');
+            if (accent) accent.className = `absolute -inset-4 blur-[120px] opacity-20 bg-gradient-to-r ${ad.accentColor} transition-all duration-1000`;
+
+            // 2. Update Content
+            setText('displayBannerTagText', ad.tag);
+
+            const titleParts = ad.title.split(' ');
+            const j1 = document.getElementById('displayBannerJudul1');
+            if (j1) {
+                j1.className = `text-4xl md:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-r ${ad.accentColor}`;
+                j1.innerText = titleParts[0];
+            }
+            setText('displayBannerJudul2', titleParts.slice(1).join(' '));
+            setText('displayBannerDeskripsi', ad.description);
+
+            setAttr('displayBannerWaLink', 'href', ad.waLink);
+            setAttr('displayBannerMapsLink', 'href', ad.mapLink);
+
+            // 3. Image with Ken Burns Reset
+            const img = document.getElementById('displayBannerImage');
+            if (img) {
+                img.src = ad.image;
+                img.classList.remove('ken-burns-active');
+                void img.offsetWidth; // Trigger reflow
+                img.classList.add('ken-burns-active');
+            }
+
+            // 4. Trigger Staggered Animations
+            const containers = [
+                { id: 'displayBannerTagContainer', stagger: 'stagger-1' },
+                { id: 'displayBannerTitleContainer', stagger: 'stagger-2' },
+                { id: 'displayBannerDeskripsi', stagger: 'stagger-3' },
+                { id: 'displayBannerBtns', stagger: 'stagger-4' }
+            ];
+
+            containers.forEach(item => {
+                const el = document.getElementById(item.id);
+                if (el) {
+                    el.classList.remove('stagger-entry', item.stagger, 'opacity-0');
+                    void el.offsetWidth; // Trigger reflow
+                    el.classList.add('stagger-entry', item.stagger);
+                }
+            });
+
+            // 5. Update Indicators (Pill Style)
+            const indicatorWrap = document.getElementById('bannerIndicators');
+            if (indicatorWrap) {
+                indicatorWrap.innerHTML = activeBanners.map((_, i) => `
+                    <div onclick="rotateBanner(${i})" class="group cursor-pointer py-2">
+                        <div class="h-1.5 rounded-full transition-all duration-500 ${i === currentBannerIndex ? 'w-10 bg-blue-500 blue-glow' : 'w-2 bg-white/20 group-hover:bg-white/40'
+                    }"></div>
+                    </div>
+                `).join('');
+            }
+
+            // 6. Apply Curtain Mask to the whole content wrap
+            const wrap = document.getElementById('bannerContentWrap');
+            if (wrap) {
+                wrap.classList.add('curtain-reveal');
+                wrap.classList.remove('active');
+                void wrap.offsetWidth; // Trigger reflow
+                wrap.classList.add('active');
+            }
+        }
+
+        function shareWebsite() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'TIKI Fiera',
+                    text: 'Spesialis Pengiriman Hewan & Dokumen Berharga',
+                    url: window.location.href
+                }).catch(console.error);
+            } else {
+                // Fallback jika browser tidak mendukung Web Share API (copy link)
+                navigator.clipboard.writeText(window.location.href);
+                alert("Link berhasil disalin ke clipboard!");
+            }
+        }
+
+        function renderTestimonials() {
+            const testiData = JSON.parse(localStorage.getItem('testiList')) || [];
+            const container = document.getElementById('experienceCarousel');
+            if (!container) return;
+
+            if (testiData.length > 0) {
+                container.innerHTML = testiData.filter(t => t.status).map(t => `
+                    <div class="w-[320px] h-[320px] snap-center shrink-0 bg-[#737373] rounded-3xl p-2.5 shadow-2xl hover:-translate-y-2 transition-all duration-300">
+                        <div class="bg-[#1f1f1f] rounded-[1.25rem] overflow-hidden h-full flex flex-col">
+                            <div class="h-1/2 relative bg-gray-800">
+                                <img src="${t.gambar}" alt="${t.nama}" class="w-full h-full object-cover" />
+                            </div>
+                            <div class="p-4 flex-1 flex items-center justify-center text-center">
+                                <p class="text-white font-bold text-base leading-snug">
+                                    "${t.pesan}"
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function renderPublicData() {
+            // A. Sync Banner Data
+            const bannerDataStr = localStorage.getItem('bannerList');
+            if (bannerDataStr) {
+                const bannerData = JSON.parse(bannerDataStr);
+                const storageBanners = bannerData.filter(b => b.statusTayang).map(b => ({
+                    id: b.id,
+                    accentColor: b.accentColor || "from-blue-500 to-cyan-400",
+                    tag: b.tagLabel || "PROMO",
+                    title: `${b.judul1} ${b.judul2}`,
+                    description: b.deskripsi || "Hubungi kami untuk detail promo menarik lainnya.",
+                    stats: [
+                        { label: b.info1Label || "Ket", value: b.info1Value || "-" },
+                        { label: b.info2Label || "Exp", value: b.info2Value || "-" }
+                    ],
+                    image: b.imageUrl || b.gambar || "asset/ons_promo.png",
+                    waLink: b.waLink || b.link || "https://wa.me/6281291498070",
+                    mapLink: b.mapLink || "https://maps.google.com"
+                }));
+                if (storageBanners.length > 0) activeBanners = storageBanners;
+            }
+            renderActiveBanner();
+
+            // B. Render Partners Marquee
+            const marqueeContainer = document.getElementById('mitraMarquee');
+            if (!marqueeContainer) return;
+            marqueeContainer.innerHTML = '';
+
+            // Ambil data dari Admin (localStorage)
+            const mitraDataStr = localStorage.getItem('mitraList');
+            let allItems = [];
+
+            if (mitraDataStr) {
+                // Jika ada data di Admin, gunakan data tersebut
+                const mitraList = JSON.parse(mitraDataStr);
+                allItems = mitraList.filter(m => m.statusTayang).map(m => ({
+                    id: m.id,
+                    nama: m.namaBisnis,
+                    deskripsi: m.kategori,
+                    gambar: m.gambar || '',
+                    ikon: m.ikon,
+                    bgC: m.bgC,
+                    links: m.links || { wa: { url: m.link || '', active: true } },
+                    isMitra: true
+                }));
+            }
+
+            // Jika Admin kosong, baru tampilkan data default (opsional)
+            if (allItems.length === 0) {
+                allItems = [...dataIklanUMKM];
+            }
+
+            // Duplicate items for infinite seamless scroll
+            const duplicatedItems = [...allItems, ...allItems];
+
+            duplicatedItems.forEach((item, idx) => {
+                const isMitra = !!item.isMitra;
+                const links = item.links || {};
+                let buttonsHTML = '';
+
+                // Render WA jika Aktif
+                if (links.wa && links.wa.active) {
+                    const waUrl = links.wa.url.startsWith('http') ? links.wa.url : `https://wa.me/${links.wa.url}`;
+                    buttonsHTML += `
+                        <a href="${waUrl}" target="_blank" class="flex items-center justify-center gap-2 py-2 bg-emerald-50 text-emerald-600 rounded-xl font-bold hover:bg-emerald-600 hover:text-white transition-all text-[10px]">
+                            <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24"><path d="M12.031 0C5.385 0 0 5.385 0 12.031c0 2.115.545 4.14 1.583 5.96L.51 24l6.19-1.62c1.765.95 3.75 1.455 5.805 1.455h.005c6.645 0 12.03-5.385 12.03-12.03S18.676 0 12.031 0zm0 21.64c-1.805 0-3.57-.485-5.115-1.405l-.365-.215-3.8.995.995-3.8-.235-.375c-.99-1.585-1.515-3.415-1.515-5.285 0-5.46 4.44-9.9 9.9-9.9 5.46 0 9.9 4.44 9.9 9.9s-4.44 9.9-9.9 9.9z"/></svg>
+                            WA
+                        </a>`;
+                }
+
+                // Render Maps jika Aktif
+                if (links.maps && links.maps.active) {
+                    buttonsHTML += `<a href="${links.maps.url}" target="_blank" class="flex items-center justify-center py-2 bg-blue-50 text-blue-600 rounded-xl font-bold hover:bg-blue-600 hover:text-white transition-all text-[10px]">Maps</a>`;
+                }
+
+                // Render IG jika Aktif
+                if (links.ig && links.ig.active) {
+                    buttonsHTML += `<a href="${links.ig.url}" target="_blank" class="flex items-center justify-center py-2 bg-pink-50 text-pink-600 rounded-xl font-bold hover:bg-pink-600 hover:text-white transition-all text-[10px]">IG</a>`;
+                }
+
+                // Render Tokped jika Aktif
+                if (links.tokped && links.tokped.active) {
+                    buttonsHTML += `<a href="${links.tokped.url}" target="_blank" class="flex items-center justify-center py-2 bg-green-50 text-green-600 rounded-xl font-bold hover:bg-green-600 hover:text-white transition-all text-[10px]">Tokped</a>`;
+                }
+
+                // Render Shopee jika Aktif
+                if (links.shopee && links.shopee.active) {
+                    buttonsHTML += `<a href="${links.shopee.url}" target="_blank" class="flex items-center justify-center py-2 bg-orange-50 text-orange-600 rounded-xl font-bold hover:bg-orange-600 hover:text-white transition-all text-[10px]">Shopee</a>`;
+                }
+
+                // Render TikTok jika Aktif
+                if (links.tiktok && links.tiktok.active) {
+                    buttonsHTML += `<a href="${links.tiktok.url}" target="_blank" class="flex items-center justify-center py-2 bg-slate-100 text-slate-900 rounded-xl font-bold hover:bg-slate-900 hover:text-white transition-all text-[10px]">TikTok</a>`;
+                }
+
+                const cardHTML = `
+                    <div class="premium-card w-[350px] flex-shrink-0 bg-white border border-slate-100 rounded-[32px] overflow-hidden group cursor-pointer shadow-sm">
+                        <!-- Image Section -->
+                        <div class="relative h-48 overflow-hidden bg-slate-100">
+                            ${item.gambar ?
+                        `<img src="${item.gambar}" alt="${item.nama}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">` :
+                        `<div class="w-full h-full ${item.bgC || 'bg-blue-600'} flex items-center justify-center text-5xl group-hover:scale-110 transition-transform duration-500">${item.ikon || '📦'}</div>`
+                    }
+                            <div class="absolute top-4 right-4 bg-blue-600 text-white text-[10px] font-bold px-3 py-1 rounded-full shadow-lg tracking-wider">${isMitra ? 'MITRA' : 'AD'}</div>
+                        </div>
+
+                        <!-- Content Section -->
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold text-slate-900 mb-2 truncate">${item.nama}</h3>
+                            <p class="text-slate-500 text-sm leading-relaxed mb-6 line-clamp-2 min-h-[40px]">${item.deskripsi}</p>
+                            <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                                ${buttonsHTML}
+                            </div>
+                        </div>
+                    </div>
+                `;
+                marqueeContainer.innerHTML += cardHTML;
+            });
+
+            // C. Initialize Draggable Marquee Controller
+            initMarqueeController(marqueeContainer);
+        }
+
+        function initMarqueeController(container) {
+            let x = 0;
+            let dragX = 0;
+            let startX = 0;
+            let isDragging = false;
+            let velocity = 0;
+            let lastX = 0;
+            let animationId = null;
+            let isPaused = false;
+            let pauseTimeout = null;
+
+            const contentWidth = container.scrollWidth / 2; // Split width for seamless loop
+
+            function update() {
+                if (!isDragging) {
+                    // Apply momentum and auto-scroll
+                    if (!isPaused) {
+                        x -= 0.8; // Auto-scroll speed
+                    }
+
+                    x += velocity;
+                    velocity *= 0.95; // Friction
+
+                    // Seamless loop check
+                    if (x > 0) x = -contentWidth;
+                    if (x < -contentWidth) x = 0;
+                }
+
+                container.style.transform = `translateX(${x}px)`;
+                animationId = requestAnimationFrame(update);
+            }
+
+            container.addEventListener('pointerdown', (e) => {
+                isDragging = true;
+                isPaused = true;
+                clearTimeout(pauseTimeout);
+                startX = e.pageX;
+                dragX = x;
+                lastX = e.pageX;
+                velocity = 0;
+                cancelAnimationFrame(animationId);
+                update();
+            });
+
+            window.addEventListener('pointermove', (e) => {
+                if (!isDragging) return;
+                const dx = e.pageX - startX;
+
+                // Elastic resistance (simple version)
+                x = dragX + dx;
+
+                // Track velocity
+                velocity = e.pageX - lastX;
+                lastX = e.pageX;
+            });
+
+            window.addEventListener('pointerup', () => {
+                if (!isDragging) return;
+                isDragging = false;
+
+                // Set timeout to resume auto-scroll
+                pauseTimeout = setTimeout(() => {
+                    isPaused = false;
+                }, 2000);
+            });
+
+            // Initial start
+            update();
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            // Admin Access
+            const secretDoor = document.getElementById('adminSecretDoor');
+            if (secretDoor) {
+                secretDoor.addEventListener('click', () => {
+                    const pin = prompt("Masukkan PIN Admin:");
+                    if (pin === "120621") {
+                        window.location.href = 'admin-iklan-fiera.html';
+                    } else {
+                        alert("PIN Salah!");
+                    }
+                });
+            }
+
+            // --- FITUR DRAG & SWIPE BANNER ---
+            const bannerEl = document.getElementById('heroPremiumBanner');
+            let touchStartX = 0;
+            let touchEndX = 0;
+
+            if (bannerEl) {
+                // Deteksi saat mulai menyentuh/klik
+                bannerEl.addEventListener('mousedown', e => {
+                    touchStartX = e.screenX;
+                    pauseBannerAutoplay();
+                }, false);
+
+                bannerEl.addEventListener('touchstart', e => {
+                    touchStartX = e.changedTouches[0].screenX;
+                    pauseBannerAutoplay();
+                }, false);
+
+                // Deteksi saat sentuhan/klik dilepas
+                bannerEl.addEventListener('mouseup', e => {
+                    touchEndX = e.screenX;
+                    handleSwipe();
+                }, false);
+
+                bannerEl.addEventListener('touchend', e => {
+                    touchEndX = e.changedTouches[0].screenX;
+                    handleSwipe();
+                }, false);
+            }
+
+            function handleSwipe() {
+                const swipeThreshold = 50; // Jarak minimal tarikan (pixel)
+                if (touchStartX - touchEndX > swipeThreshold) {
+                    // Geser ke Kiri (Next)
+                    rotateBanner('next');
+                } else if (touchEndX - touchStartX > swipeThreshold) {
+                    // Geser ke Kanan (Prev)
+                    rotateBanner('prev');
+                }
+                startBannerAutoplay(); // Jalankan kembali autoplay setelah interaksi selesai
+            }
+
+            // Sync All Data
+            renderPublicData();
+            renderTestimonials();
+            startBannerAutoplay(7000);
+            window.addEventListener('storage', () => {
+                renderPublicData();
+                renderTestimonials();
+            });
+        });
+    </script>
+</body>
+
+</html>
