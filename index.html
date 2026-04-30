@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="id">
 
 <head>
@@ -1126,8 +1126,25 @@
             setText('displayBannerJudul2', titleParts.slice(1).join(' '));
             setText('displayBannerDeskripsi', ad.description);
 
-            setAttr('displayBannerWaLink', 'href', ad.waLink);
-            setAttr('displayBannerMapsLink', 'href', ad.mapLink);
+            const waBtn = document.getElementById('displayBannerWaLink');
+            if (waBtn) {
+                waBtn.href = ad.waLink;
+                if (ad.isWAActive !== false) {
+                    waBtn.classList.remove('hidden');
+                } else {
+                    waBtn.classList.add('hidden');
+                }
+            }
+            
+            const mapBtn = document.getElementById('displayBannerMapsLink');
+            if (mapBtn) {
+                mapBtn.href = ad.mapLink;
+                if (ad.isMapActive !== false) {
+                    mapBtn.classList.remove('hidden');
+                } else {
+                    mapBtn.classList.add('hidden');
+                }
+            }
 
             // 3. Image with Ken Burns Reset
             const img = document.getElementById('displayBannerImage');
@@ -1197,21 +1214,37 @@
             const container = document.getElementById('experienceCarousel');
             if (!container) return;
 
-            if (testiData.length > 0) {
-                container.innerHTML = testiData.filter(t => t.status).map(t => `
+            // PENTING: Kosongkan kontainer agar teks statis hilang sebelum data asli muncul
+            container.innerHTML = '';
+
+            const activeTestimonials = testiData.filter(t => t.status || t.statusTayang);
+
+            if (activeTestimonials.length > 0) {
+                container.innerHTML = activeTestimonials.map(t => {
+                    const pesan = t.pesanTestimoni || t.pesan || t.Pesan || t.message || t.teks || t.deskripsi || t.text;
+                    const pesanTeks = (pesan && pesan !== 'undefined') ? pesan : "Testimoni Pelanggan";
+                    let imgSrc = t.gambar || 'asset/fototiki.png';
+                    if (imgSrc === 'https://via.placeholder.com/150' || imgSrc === 'undefined') {
+                        imgSrc = 'asset/fototiki.png';
+                    }
+                    const namaTeks = t.nama || t.namaBisnis || "Pelanggan";
+                    return `
                     <div class="w-[320px] h-[320px] snap-center shrink-0 bg-[#737373] rounded-3xl p-2.5 shadow-2xl hover:-translate-y-2 transition-all duration-300">
                         <div class="bg-[#1f1f1f] rounded-[1.25rem] overflow-hidden h-full flex flex-col">
                             <div class="h-1/2 relative bg-gray-800">
-                                <img src="${t.gambar}" alt="${t.nama}" class="w-full h-full object-cover" />
+                                <img src="${imgSrc}" alt="${namaTeks}" class="w-full h-full object-cover" onerror="this.src='asset/fototiki.png'" />
                             </div>
                             <div class="p-4 flex-1 flex items-center justify-center text-center">
                                 <p class="text-white font-bold text-base leading-snug">
-                                    "${t.pesan}"
+                                    ${pesanTeks}
                                 </p>
                             </div>
                         </div>
                     </div>
-                `).join('');
+                `}).join('');
+            } else {
+                // Tampilkan pesan jika memang belum ada testimoni yang dibuat
+                container.innerHTML = '<p class="text-white/50 text-center w-full">Belum ada testimoni.</p>';
             }
         }
 
@@ -1233,7 +1266,9 @@
                     ],
                     image: b.imageUrl || b.gambar || "asset/ons_promo.png",
                     waLink: b.waLink || b.link || "https://wa.me/6281291498070",
-                    mapLink: b.mapLink || "https://maps.google.com"
+                    isWAActive: b.isWAActive !== undefined ? b.isWAActive : true,
+                    mapLink: b.mapLink || "https://maps.google.com",
+                    isMapActive: b.isMapActive !== undefined ? b.isMapActive : true
                 }));
 
                 storageBanners.sort((a, b) => {
