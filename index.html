@@ -610,7 +610,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 relative">
 
             <div id="heroPremiumBanner" onmouseenter="pauseBannerAutoplay()" onmouseleave="startBannerAutoplay()"
-                class="relative overflow-hidden bg-[#051124] rounded-[4rem] border border-white/5 shadow-2xl transition-all h-[550px] md:h-[600px] group/banner">
+                class="relative overflow-hidden bg-[#051124] rounded-[4rem] border border-white/5 shadow-2xl transition-all h-auto md:h-[600px] flex flex-col md:flex-row group/banner">
                 <!-- Adaptive Accent Glow -->
                 <div id="bannerAccentGlow"
                     class="absolute -inset-4 blur-[120px] opacity-20 bg-gradient-to-r from-blue-600 to-cyan-500 transition-all duration-1000">
@@ -619,7 +619,7 @@
                 <div id="bannerContentWrap"
                     class="banner-content flex flex-col md:flex-row items-center h-full relative z-10">
                     <!-- Left: Content Area -->
-                    <div class="w-full md:w-3/5 p-10 md:p-20">
+                    <div class="w-full md:w-3/5 p-6 md:p-20">
                         <div id="displayBannerTagContainer" class="opacity-0">
                             <span id="displayBannerTagText"
                                 class="text-emerald-400 font-bold tracking-[0.4em] text-[10px] uppercase block mb-8">PROMO
@@ -640,20 +640,32 @@
                         </p>
 
                         <!-- Action Buttons -->
-                        <div id="displayBannerBtns" class="opacity-0 flex flex-wrap gap-6">
+                        <div id="displayBannerBtns" class="opacity-0 flex flex-col sm:flex-row gap-4">
                             <a id="displayBannerWaLink" href="#" target="_blank"
-                                class="bg-blue-600 hover:bg-blue-500 text-white px-10 py-5 rounded-2xl font-bold transition-all blue-glow active:scale-95 text-lg">
+                                class="bg-blue-600 hover:bg-blue-500 text-white px-10 py-5 rounded-2xl font-bold transition-all blue-glow active:scale-95 text-lg flex items-center justify-center gap-2">
                                 Hubungi Admin
                             </a>
                             <a id="displayBannerMapsLink" href="#" target="_blank"
-                                class="bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10 px-10 py-5 rounded-2xl font-bold transition-all text-lg">
+                                class="bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10 px-10 py-5 rounded-2xl font-bold transition-all text-lg flex items-center justify-center gap-2">
                                 Cek Lokasi
+                            </a>
+                            <a id="displayBannerWebLink" href="#" target="_blank"
+                                class="bg-emerald-600 hover:bg-emerald-500 text-white border border-emerald-500/20 px-10 py-5 rounded-2xl font-bold transition-all text-lg flex items-center justify-center gap-2">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M3.6 9h16.8M3.6 15h16.8" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M11.5 3a17 17 0 000 18m1-18a17 17 0 010 18" />
+                                </svg>
+                                Website
                             </a>
                         </div>
                     </div>
 
                     <!-- Right: Image Area -->
-                    <div class="hidden md:block w-2/5 h-full p-8">
+                    <div class="w-full md:w-2/5 h-64 md:h-full p-6 md:p-8 order-first md:order-last">
                         <div id="displayBannerImageWrap"
                             class="relative w-full h-full rounded-[3rem] overflow-hidden border border-white/10 shadow-2xl">
                             <img id="displayBannerImage" src="asset/ons_promo.png" alt="Promo"
@@ -870,11 +882,11 @@
                     <p class="text-slate-500 text-[10px] tracking-wide">Â© 2026 TIKI Fiera. All rights reserved.</p>
                     <div class="flex items-center gap-2 text-slate-500 text-[10px]">
                         <span class="opacity-50">Powered by</span>
-                        <a href="#" class="group">
-                            <img src="asset/ulink.png" alt="My.U-link" id="adminSecretDoorLocation"
-                                class="h-4 opacity-40 group-hover:opacity-100 transition-opacity select-none"
-                                title="Smart Digital System">
-                        </a>
+                        <img src="asset/ulink.png" 
+                             alt="My.U-link" 
+                             id="adminSecretDoor" 
+                             class="h-4 opacity-40 hover:opacity-100 transition-opacity cursor-pointer select-none"
+                             title="Smart Digital System">
                     </div>
                 </div>
             </div>
@@ -1019,7 +1031,9 @@
                 stats: [{ label: "Min. Berat", value: "5 KG" }, { label: "Berakhir", value: "30 NOV" }],
                 image: "asset/iklan%20tiki.png",
                 waLink: "https://wa.me/6281291498070?text=Halo%20Admin%20TIKI%20Fiera,%20tanya%20promo%20ONS",
-                mapLink: "https://maps.google.com/?q=TIKI+Fiera+Tangerang"
+                mapLink: "https://maps.google.com/?q=TIKI+Fiera+Tangerang",
+                webLink: "#",
+                isWebActive: false
             },
             {
                 id: 2,
@@ -1030,7 +1044,9 @@
                 stats: [{ label: "Jalur", value: "Darat" }, { label: "Est.", value: "3-4 Hari" }],
                 image: "asset/iklantiki2.jpg",
                 waLink: "https://wa.me/6281291498070?text=Halo%20Admin%20TIKI%20Fiera,%20tanya%20kirim%20reptil",
-                mapLink: "https://maps.google.com/?q=TIKI+Fiera+Tangerang"
+                mapLink: "https://maps.google.com/?q=TIKI+Fiera+Tangerang",
+                webLink: "#",
+                isWebActive: false
             }
         ];
 
@@ -1135,7 +1151,7 @@
                     waBtn.classList.add('hidden');
                 }
             }
-            
+
             const mapBtn = document.getElementById('displayBannerMapsLink');
             if (mapBtn) {
                 mapBtn.href = ad.mapLink;
@@ -1143,6 +1159,16 @@
                     mapBtn.classList.remove('hidden');
                 } else {
                     mapBtn.classList.add('hidden');
+                }
+            }
+
+            const webBtn = document.getElementById('displayBannerWebLink');
+            if (webBtn) {
+                webBtn.href = ad.webLink;
+                if (ad.isWebActive === true) {
+                    webBtn.classList.remove('hidden');
+                } else {
+                    webBtn.classList.add('hidden');
                 }
             }
 
@@ -1210,7 +1236,17 @@
         }
 
         function renderTestimonials() {
-            const testiData = JSON.parse(localStorage.getItem('testiList')) || [];
+            let testiData = [];
+            try {
+                const dataStr = localStorage.getItem('testiList');
+                if (dataStr && dataStr !== 'undefined') {
+                    testiData = JSON.parse(dataStr);
+                }
+            } catch (e) {
+                console.error("Gagal membaca testiList dari localStorage:", e);
+                testiData = [];
+            }
+
             const container = document.getElementById('experienceCarousel');
             if (!container) return;
 
@@ -1234,9 +1270,12 @@
                             <div class="h-1/2 relative bg-gray-800">
                                 <img src="${imgSrc}" alt="${namaTeks}" class="w-full h-full object-cover" onerror="this.src='asset/fototiki.png'" />
                             </div>
-                            <div class="p-4 flex-1 flex items-center justify-center text-center">
-                                <p class="text-white font-bold text-base leading-snug">
-                                    ${pesanTeks}
+                            <div class="p-4 flex-1 flex flex-col items-center justify-center text-center gap-2">
+                                <p class="text-white font-bold text-sm leading-snug italic">
+                                    "${pesanTeks}"
+                                </p>
+                                <p class="text-blue-400 font-semibold text-xs mt-auto">
+                                    - ${namaTeks}
                                 </p>
                             </div>
                         </div>
@@ -1250,33 +1289,39 @@
 
         function renderPublicData() {
             // A. Sync Banner Data
-            const bannerDataStr = localStorage.getItem('bannerList');
-            if (bannerDataStr) {
-                const bannerData = JSON.parse(bannerDataStr);
-                const storageBanners = bannerData.filter(b => b.statusTayang).map(b => ({
-                    id: b.id,
-                    tier: b.paketTier || 'basic',
-                    accentColor: b.accentColor || "from-blue-500 to-cyan-400",
-                    tag: b.tagLabel || "PROMO",
-                    title: `${b.judul1} ${b.judul2}`,
-                    description: b.deskripsi || "Hubungi kami untuk detail promo menarik lainnya.",
-                    stats: [
-                        { label: b.info1Label || "Ket", value: b.info1Value || "-" },
-                        { label: b.info2Label || "Exp", value: b.info2Value || "-" }
-                    ],
-                    image: b.imageUrl || b.gambar || "asset/ons_promo.png",
-                    waLink: b.waLink || b.link || "https://wa.me/6281291498070",
-                    isWAActive: b.isWAActive !== undefined ? b.isWAActive : true,
-                    mapLink: b.mapLink || "https://maps.google.com",
-                    isMapActive: b.isMapActive !== undefined ? b.isMapActive : true
-                }));
+            try {
+                const bannerDataStr = localStorage.getItem('bannerList');
+                if (bannerDataStr && bannerDataStr !== 'undefined') {
+                    const bannerData = JSON.parse(bannerDataStr);
+                    const storageBanners = bannerData.filter(b => b.statusTayang).map(b => ({
+                        id: b.id,
+                        tier: b.paketTier || 'basic',
+                        accentColor: b.accentColor || "from-blue-500 to-cyan-400",
+                        tag: b.tagLabel || "PROMO",
+                        title: `${b.judul1} ${b.judul2}`,
+                        description: b.deskripsi || "Hubungi kami untuk detail promo menarik lainnya.",
+                        stats: [
+                            { label: b.info1Label || "Ket", value: b.info1Value || "-" },
+                            { label: b.info2Label || "Exp", value: b.info2Value || "-" }
+                        ],
+                        image: b.imageUrl || b.gambar || "asset/ons_promo.png",
+                        waLink: b.waLink || b.link || "https://wa.me/6281291498070",
+                        isWAActive: b.isWAActive !== undefined ? b.isWAActive : true,
+                        mapLink: b.mapLink || "https://maps.google.com",
+                        isMapActive: b.isMapActive !== undefined ? b.isMapActive : true,
+                        webLink: b.webLink || "#",
+                        isWebActive: b.isWebActive === true
+                    }));
 
-                storageBanners.sort((a, b) => {
-                    const order = { 'gold': 1, 'silver': 2, 'basic': 3 };
-                    return (order[a.tier] || 3) - (order[b.tier] || 3);
-                });
+                    storageBanners.sort((a, b) => {
+                        const order = { 'gold': 1, 'silver': 2, 'basic': 3 };
+                        return (order[a.tier] || 3) - (order[b.tier] || 3);
+                    });
 
-                if (storageBanners.length > 0) activeBanners = storageBanners;
+                    if (storageBanners.length > 0) activeBanners = storageBanners;
+                }
+            } catch (e) {
+                console.error("Gagal memproses bannerList:", e);
             }
             renderActiveBanner();
 
@@ -1286,22 +1331,25 @@
             marqueeContainer.innerHTML = '';
 
             // Ambil data dari Admin (localStorage)
-            const mitraDataStr = localStorage.getItem('mitraList');
             let allItems = [];
-
-            if (mitraDataStr) {
-                // Jika ada data di Admin, gunakan data tersebut
-                const mitraList = JSON.parse(mitraDataStr);
-                allItems = mitraList.filter(m => m.statusTayang).map(m => ({
-                    id: m.id,
-                    nama: m.namaBisnis,
-                    deskripsi: m.kategori,
-                    gambar: m.gambar || '',
-                    ikon: m.ikon,
-                    bgC: m.bgC,
-                    links: m.links || { wa: { url: m.link || '', active: true } },
-                    isMitra: true
-                }));
+            try {
+                const mitraDataStr = localStorage.getItem('mitraList');
+                if (mitraDataStr && mitraDataStr !== 'undefined') {
+                    // Jika ada data di Admin, gunakan data tersebut
+                    const mitraList = JSON.parse(mitraDataStr);
+                    allItems = mitraList.filter(m => m.statusTayang).map(m => ({
+                        id: m.id,
+                        nama: m.namaBisnis,
+                        deskripsi: m.kategori,
+                        gambar: m.gambar || '',
+                        ikon: m.ikon,
+                        bgC: m.bgC,
+                        links: m.links || { wa: { url: m.link || '', active: true } },
+                        isMitra: true
+                    }));
+                }
+            } catch (e) {
+                console.error("Gagal memproses mitraList:", e);
             }
 
             // Jika Admin kosong, baru tampilkan data default (opsional)
@@ -1350,6 +1398,11 @@
                 // Render TikTok jika Aktif
                 if (links.tiktok && links.tiktok.active) {
                     buttonsHTML += `<a href="${links.tiktok.url}" target="_blank" class="flex items-center justify-center py-2 bg-slate-100 text-slate-900 rounded-xl font-bold hover:bg-slate-900 hover:text-white transition-all text-[10px]">TikTok</a>`;
+                }
+
+                // Render Web jika Aktif
+                if (links.web && links.web.active) {
+                    buttonsHTML += `<a href="${links.web.url}" target="_blank" class="flex items-center justify-center py-2 bg-indigo-50 text-indigo-600 rounded-xl font-bold hover:bg-indigo-600 hover:text-white transition-all text-[10px]">Web</a>`;
                 }
 
                 const cardHTML = `
@@ -1452,14 +1505,26 @@
 
         document.addEventListener('DOMContentLoaded', function () {
             // Admin Access
-            const secretDoor = document.getElementById('adminSecretDoor');
-            if (secretDoor) {
-                secretDoor.addEventListener('click', () => {
-                    const pin = prompt("Masukkan PIN Admin:");
-                    if (pin === "120621") {
-                        window.location.href = 'admin-iklan-fiera.html';
-                    } else {
-                        alert("PIN Salah!");
+            let secretClickCount = 0;
+            let clickTimer;
+
+            const door = document.getElementById('adminSecretDoor');
+            if (door) {
+                door.addEventListener('click', function() {
+                    secretClickCount++;
+                    
+                    // Reset hitungan jika dalam 2 detik tidak diklik lagi
+                    clearTimeout(clickTimer);
+                    clickTimer = setTimeout(() => { secretClickCount = 0; }, 2000);
+
+                    if (secretClickCount === 5) {
+                        secretClickCount = 0;
+                        const pin = prompt("Masukkan PIN Admin:");
+                        if (pin === "120621") {
+                            window.location.href = 'admin-iklan-fiera.html';
+                        } else if (pin !== null) {
+                            alert("PIN Salah!");
+                        }
                     }
                 });
             }
