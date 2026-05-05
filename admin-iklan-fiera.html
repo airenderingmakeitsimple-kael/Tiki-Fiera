@@ -135,6 +135,17 @@
                     </svg>
                     Backup Data
                 </button>
+
+                <!-- Tombol Import Backup + hidden file input -->
+                <input type="file" id="importFileInput" accept=".json" class="hidden" onchange="importBackup(event)">
+                <button onclick="document.getElementById('importFileInput').click()"
+                    class="bg-amber-50 hover:bg-amber-100 text-amber-700 border border-amber-200 px-4 py-2 rounded-lg text-sm font-semibold flex items-center shadow-sm transition-colors">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l4-4m0 0l4 4m-4-4v12" />
+                    </svg>
+                    Import Backup
+                </button>
                 <button onclick="openModalTambahBanner()"
                     class="bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 px-4 py-2 rounded-lg text-sm font-semibold flex items-center shadow-sm transition-all group">
                     <svg class="w-4 h-4 mr-2 text-slate-400 group-hover:text-blue-600" fill="none" stroke="currentColor"
@@ -690,8 +701,15 @@
 
         function getMitraData() { return JSON.parse(localStorage.getItem('mitraList')); }
         function getBannerData() { return JSON.parse(localStorage.getItem('bannerList')); }
-        function setMitraData(data) { localStorage.setItem('mitraList', JSON.stringify(data)); }
-        function setBannerData(data) { localStorage.setItem('bannerList', JSON.stringify(data)); }
+        function setMitraData(data) {
+            localStorage.setItem('mitraList', JSON.stringify(data));
+            // Beritahu tab lain (index.html) agar langsung sync
+            window.dispatchEvent(new StorageEvent('storage', { key: 'mitraList' }));
+        }
+        function setBannerData(data) {
+            localStorage.setItem('bannerList', JSON.stringify(data));
+            window.dispatchEvent(new StorageEvent('storage', { key: 'bannerList' }));
+        }
 
         // --- RENDER TABLES ---
         function renderMitraTable() {
@@ -848,6 +866,16 @@
             }
         }
 
+        // --- HELPER: Baca file sebagai base64 ---
+        function readFileAsBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = e => resolve(e.target.result);
+                reader.onerror = () => reject(new Error("Gagal membaca file."));
+                reader.readAsDataURL(file);
+            });
+        }
+
         // --- OVERRIDE SIMPANDATA MODAL ---
         async function simpanData() {
             const namaBisnis = document.getElementById('mitraNamaBisnis').value;
@@ -855,17 +883,23 @@
             const isTayang = document.getElementById('statusTayang').checked;
             const fileInput = document.getElementById('imageInput');
 
-            let imageUrl = (editMitraIndex !== null ? getMitraData()[editMitraIndex].gambar : '');
+            if (!namaBisnis || !kategori) return alert("Penuhi Nama dan Kategori");
+
+            let data = getMitraData();
+            // Pertahankan gambar lama jika tidak ada file baru
+            let imageUrl = (editMitraIndex !== null ? data[editMitraIndex].gambar : '');
 
             if (fileInput.files[0]) {
-                imageUrl = "asset/" + fileInput.files[0].name;
+                try {
+                    // Simpan sebagai base64 agar tidak bergantung pada path file lokal
+                    imageUrl = await readFileAsBase64(fileInput.files[0]);
+                } catch (e) {
+                    return alert("Gagal memproses gambar: " + e.message);
+                }
             }
 
             const ikonVal = imageUrl ? "<svg class='w-5 h-5' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z' /></svg>" : "<svg class='w-5 h-5' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4' /></svg>";
 
-            if (!namaBisnis || !kategori) return alert("Penuhi Nama dan Kategori");
-
-            let data = getMitraData();
             const mitraBaru = {
                 id: editMitraIndex !== null ? data[editMitraIndex].id : Date.now(),
                 namaBisnis: namaBisnis,
@@ -907,10 +941,22 @@
             const waNumber = document.getElementById('bannerWaNumber').value;
             const fileInput = document.getElementById('bannerImageInput');
 
+            // Pertahankan gambar lama jika tidak ada file baru
             let imageUrl = (editBannerIndex !== null ? data[editBannerIndex].imageUrl : '');
 
             if (fileInput.files[0]) {
-                imageUrl = "asset/" + fileInput.files[0].name;
+                try {
+                    // Simpan sebagai base64 agar gambar persisten di localStorage
+                    imageUrl = await readFileAsBase64(fileInput.files[0]);
+                } catch (e) {
+                    return alert("Gagal memproses gambar: " + e.message);
+                }
+            } else if (!imageUrl) {
+                // Jika tidak ada file baru dan tidak ada gambar lama, coba ambil dari preview (base64 saja)
+                const previewSrc = document.getElementById('bannerImagePreview').src;
+                if (previewSrc && previewSrc.startsWith('data:')) {
+                    imageUrl = previewSrc;
+                }
             }
 
             const tierVal = document.getElementById('paketTier').value || 'basic';
@@ -933,7 +979,7 @@
                 endDate: expStr,
                 waLink: `https://wa.me/${waNumber}`,
                 mapLink: document.getElementById('bannerMapUrl').value || "#",
-                imageUrl: imageUrl || document.getElementById('bannerImagePreview').src,
+                imageUrl: imageUrl || '',
                 info1Label: document.getElementById('bannerInfo1Label').value || "MINIMAL BERAT",
                 info1Value: document.getElementById('bannerInfo1Value').value || "5 Kg",
                 info2Label: document.getElementById('bannerInfo2Label').value || "PROMO BERAKHIR",
@@ -1097,7 +1143,10 @@
             const data = localStorage.getItem('testiList');
             return data ? JSON.parse(data) : [...defaultTestiList];
         }
-        function setTestiData(data) { localStorage.setItem('testiList', JSON.stringify(data)); }
+        function setTestiData(data) {
+            localStorage.setItem('testiList', JSON.stringify(data));
+            window.dispatchEvent(new StorageEvent('storage', { key: 'testiList' }));
+        }
 
         function renderTestiTable() {
             const tableBody = document.getElementById('testiTableBody');
@@ -1146,7 +1195,8 @@
             const data = {
                 testiList: JSON.parse(localStorage.getItem('testiList') || '[]'),
                 mitraList: JSON.parse(localStorage.getItem('mitraList') || '[]'),
-                bannerList: JSON.parse(localStorage.getItem('bannerList') || '[]')
+                bannerList: JSON.parse(localStorage.getItem('bannerList') || '[]'),
+                adminPIN: localStorage.getItem('adminPIN') || ''
             };
             const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data, null, 2));
             const downloadAnchorNode = document.createElement('a');
@@ -1156,6 +1206,54 @@
             document.body.appendChild(downloadAnchorNode);
             downloadAnchorNode.click();
             downloadAnchorNode.remove();
+        }
+
+        function importBackup(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            event.target.value = ''; // reset agar bisa import ulang file sama
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+
+                    if (!data.mitraList && !data.bannerList && !data.testiList) {
+                        alert("❌ File tidak valid. Pastikan file adalah backup dari TIKI Fiera.");
+                        return;
+                    }
+
+                    const mitraCount  = (data.mitraList  || []).length;
+                    const bannerCount = (data.bannerList || []).length;
+                    const testiCount  = (data.testiList  || []).length;
+
+                    if (!confirm(
+                        `✅ File backup ditemukan!\n\n` +
+                        `• Mitra   : ${mitraCount} data\n` +
+                        `• Banner  : ${bannerCount} data\n` +
+                        `• Testimoni: ${testiCount} data\n\n` +
+                        `Import akan menggantikan data yang ada sekarang.\nLanjutkan?`
+                    )) return;
+
+                    if (data.mitraList)  localStorage.setItem('mitraList',  JSON.stringify(data.mitraList));
+                    if (data.bannerList) localStorage.setItem('bannerList', JSON.stringify(data.bannerList));
+                    if (data.testiList)  localStorage.setItem('testiList',  JSON.stringify(data.testiList));
+                    if (data.adminPIN)   localStorage.setItem('adminPIN',   data.adminPIN);
+
+                    // Refresh semua tabel & analitik
+                    renderMitraTable();
+                    renderBannerTable();
+                    renderTestiTable();
+                    updateAnalytics();
+                    renderExpirationList();
+                    if (typeof renderCalendar === 'function') renderCalendar();
+
+                    alert("✅ Import berhasil! Semua data telah disinkronkan.");
+                } catch (err) {
+                    alert("❌ Gagal membaca file backup.\nDetail: " + err.message);
+                }
+            };
+            reader.readAsText(file);
         }
 
         function hapusTesti(index) {
@@ -1177,13 +1275,18 @@
 
             if (!nama || !teks) return alert("Penuhi Nama dan Teks");
 
-            let imageUrl = 'https://via.placeholder.com/150';
+            let imageUrl = '';
             if (fileInput.files[0]) {
-                imageUrl = "asset/" + fileInput.files[0].name;
+                try {
+                    // Simpan sebagai base64 agar gambar persisten
+                    imageUrl = await readFileAsBase64(fileInput.files[0]);
+                } catch (e) {
+                    return alert("Gagal memproses gambar: " + e.message);
+                }
             }
 
             let data = getTestiData();
-            data.push({ id: Date.now(), nama, pesanTestimoni: teks, gambar: imageUrl || 'https://via.placeholder.com/150', status: true });
+            data.push({ id: Date.now(), nama, pesanTestimoni: teks, gambar: imageUrl || 'asset/fototiki.png', status: true });
             setTestiData(data);
             alert("Testimoni disimpan!");
             renderTestiTable();

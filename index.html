@@ -1020,46 +1020,47 @@
     </footer>
 
     <script>
-        // 1. Data Iklan Premium (Banner Slider)
-        const premiumAds = [
+        // ============================================================
+        // DATA DEFAULT — sinkron dengan admin-iklan-fiera.html
+        // Tampil saat localStorage kosong (Incognito / browser baru)
+        // Untuk update permanen: edit di admin → Backup → Import di browser lain
+        // ============================================================
+
+        // 1. Data Banner Premium Default
+        const defaultBannerPublic = [
             {
                 id: 1,
                 accentColor: "from-blue-500 to-cyan-400",
                 tag: "PROMO SPESIAL",
                 title: "Diskon 50% Kiriman ONS",
                 description: "Kirim paket kilat satu hari sampai dengan harga setengahnya. Spesialis dokumen & hewan.",
-                stats: [{ label: "Min. Berat", value: "5 KG" }, { label: "Berakhir", value: "30 NOV" }],
+                stats: [{ label: "MINIMAL BERAT", value: "5 Kg" }, { label: "PROMO BERAKHIR", value: "30 Nov" }],
                 image: "asset/iklan%20tiki.png",
-                waLink: "https://wa.me/6281291498070?text=Halo%20Admin%20TIKI%20Fiera,%20tanya%20promo%20ONS",
-                mapLink: "https://maps.google.com/?q=TIKI+Fiera+Tangerang",
-                webLink: "#",
-                isWebActive: false
-            },
-            {
-                id: 2,
-                accentColor: "from-emerald-500 to-teal-400",
-                tag: "LAYANAN REPTIL",
-                title: "Kirim Aman Tanpa Cemas",
-                description: "Layanan pengiriman hewan melata dengan standar keamanan tinggi dan legalitas terjamin.",
-                stats: [{ label: "Jalur", value: "Darat" }, { label: "Est.", value: "3-4 Hari" }],
-                image: "asset/iklantiki2.jpg",
-                waLink: "https://wa.me/6281291498070?text=Halo%20Admin%20TIKI%20Fiera,%20tanya%20kirim%20reptil",
-                mapLink: "https://maps.google.com/?q=TIKI+Fiera+Tangerang",
+                waLink: "https://wa.me/6281291498070",
+                isWAActive: true,
+                mapLink: "https://maps.google.com/?q=TIKI+Fiera+Kebon+Kacang",
+                isMapActive: true,
                 webLink: "#",
                 isWebActive: false
             }
         ];
 
-        // 2. Data Iklan UMKM (Partners Grid)
-        const dataIklanUMKM = [
-            { id: 1, nama: "kebonoddie", deskripsi: "Plant shop", gambar: "asset/kebonoddie.jpg", links: { wa: { url: "6281291498070", active: true } }, isMitra: true },
-            { id: 2, nama: "PT Surya Nusantara Sentosa", deskripsi: "Logistic Service", gambar: "asset/logosuryanusantara.jpg", links: { wa: { url: "6281291498070", active: true } }, isMitra: true },
-            { id: 3, nama: "Hartono", deskripsi: "Architecture & Interior", gambar: "asset/logohartono.png", links: { wa: { url: "6281291498070", active: true } }, isMitra: true },
-            { id: 4, nama: "DLI Store", deskripsi: "Retail", gambar: "asset/logo%20dlistore.jpeg", links: { wa: { url: "6281291498070", active: true } }, isMitra: true }
+        // 2. Data Mitra UMKM Default
+        const defaultMitraPublic = [
+            { id: 1, nama: "kebonoddie", deskripsi: "Plant shop", gambar: "asset/kebonoddie.jpg", bgC: "bg-green-100", links: { wa: { url: "6281291498070", active: true } }, isMitra: true },
+            { id: 2, nama: "PT Surya Nusantara Sentosa", deskripsi: "Logistic Service", gambar: "asset/logosuryanusantara.jpg", bgC: "bg-blue-100", links: { wa: { url: "6281291498070", active: true } }, isMitra: true },
+            { id: 3, nama: "Hartono", deskripsi: "Architecture & Interior", gambar: "asset/logohartono.png", bgC: "bg-slate-100", links: { wa: { url: "6281291498070", active: true } }, isMitra: true },
+            { id: 4, nama: "DLI Store", deskripsi: "Retail", gambar: "asset/logo%20dlistore.jpeg", bgC: "bg-pink-100", links: { wa: { url: "6281291498070", active: true } }, isMitra: true }
+        ];
+
+        // 3. Data Testimoni Default
+        const defaultTestiPublic = [
+            { id: 1, nama: "Budi (Breeder)", pesanTestimoni: "Kirim reptil ke luar pulau sangat aman!", gambar: "asset/fototiki.png", status: true },
+            { id: 2, nama: "Sari (Owner Kedai)", pesanTestimoni: "Layanan ONS TIKI FIERA KEBON KACANG sangat tepat waktu.", gambar: "asset/fototiki.png", status: true }
         ];
 
         let currentBannerIndex = 0;
-        let activeBanners = [...premiumAds];
+        let activeBanners = [...defaultBannerPublic];
         let bannerAutoplayInterval = null;
 
         function startBannerAutoplay() {
@@ -1246,6 +1247,10 @@
                 console.error("Gagal membaca testiList dari localStorage:", e);
                 testiData = [];
             }
+            // Fallback ke data default jika localStorage kosong (Incognito/browser baru)
+            if (testiData.length === 0) {
+                testiData = [...defaultTestiPublic];
+            }
 
             const container = document.getElementById('experienceCarousel');
             if (!container) return;
@@ -1318,7 +1323,11 @@
                         return (order[a.tier] || 3) - (order[b.tier] || 3);
                     });
 
-                    if (storageBanners.length > 0) activeBanners = storageBanners;
+                    if (storageBanners.length > 0) {
+                        activeBanners = storageBanners;
+                    } else {
+                        activeBanners = [...defaultBannerPublic];
+                    }
                 }
             } catch (e) {
                 console.error("Gagal memproses bannerList:", e);
@@ -1352,9 +1361,9 @@
                 console.error("Gagal memproses mitraList:", e);
             }
 
-            // Jika Admin kosong, baru tampilkan data default (opsional)
+            // Jika localStorage kosong (Incognito/browser baru), gunakan data default
             if (allItems.length === 0) {
-                allItems = [...dataIklanUMKM];
+                allItems = [...defaultMitraPublic];
             }
 
             // Duplicate items for infinite seamless scroll
@@ -1520,7 +1529,9 @@
                     if (secretClickCount === 5) {
                         secretClickCount = 0;
                         const pin = prompt("Masukkan PIN Admin:");
-                        if (pin === "120621") {
+                        // Baca PIN dari localStorage (bisa diubah dari halaman admin)
+                        const savedPIN = localStorage.getItem('adminPIN') || "120621";
+                        if (pin === savedPIN) {
                             window.location.href = 'admin-iklan-fiera.html';
                         } else if (pin !== null) {
                             alert("PIN Salah!");
