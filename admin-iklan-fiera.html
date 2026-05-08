@@ -657,33 +657,54 @@
 
         // --- LOGIKA DATA LOCALSTORAGE ---
         const defaultMitraList = [
-            { id: 1, namaBisnis: "kebonoddie", kategori: "Plant shop", ikon: "<svg class='w-5 h-5' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z' /></svg>", bgC: "bg-green-100", colorC: "text-green-400", gambar: "asset/kebonoddie.jpg", links: { wa: { url: "6281291498070", active: true } }, statusTayang: true, endDate: "15 Mei 2026" },
-            { id: 2, namaBisnis: "PT Surya Nusantara Sentosa", kategori: "Logistic Service", ikon: "<svg class='w-5 h-5' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4' /></svg>", bgC: "bg-blue-100", colorC: "text-blue-400", gambar: "asset/logosuryanusantara.jpg", links: { wa: { url: "6281291498070", active: true } }, statusTayang: true, endDate: "10 Agt 2026" },
-            { id: 3, namaBisnis: "Hartono", kategori: "Architecture & Interior", ikon: "<svg class='w-5 h-5' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6' /></svg>", bgC: "bg-slate-100", colorC: "text-slate-600", gambar: "asset/logohartono.png", links: { wa: { url: "6281291498070", active: true } }, statusTayang: true, endDate: "20 Des 2026" },
-            { id: 4, namaBisnis: "DLI Store", kategori: "Retail", ikon: "<svg class='w-5 h-5' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z' /></svg>", bgC: "bg-pink-100", colorC: "text-pink-600", gambar: "asset/logo%20dlistore.jpeg", links: { wa: { url: "6281291498070", active: true } }, statusTayang: true, endDate: "5 Jan 2027" }
+            { id: 1, namaBisnis: "kebonoddie", kategori: "Plant shop", ikon: "<svg class='w-5 h-5' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z' /></svg>", bgC: "bg-green-100", colorC: "text-green-400", gambar: "asset/kebonoddie.jpg", links: { wa: { url: "6281291498070", active: true }, ig: { url: "https://www.instagram.com/kebunoddie/", active: true } }, statusTayang: true, endDate: "15 Mei 2026" },
+            { id: 2, namaBisnis: "PT. SNS", kategori: "Service AC mobil", ikon: "<svg class='w-5 h-5' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4' /></svg>", bgC: "bg-blue-100", colorC: "text-blue-400", gambar: "asset/logosuryanusantara.jpg", links: { wa: { url: "6281291498070", active: true } }, statusTayang: true, endDate: "10 Agt 2026" },
+            { id: 3, namaBisnis: "iam hartono", kategori: "Design & Build funiture", ikon: "<svg class='w-5 h-5' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6' /></svg>", bgC: "bg-slate-100", colorC: "text-slate-600", gambar: "asset/logohartono.png", links: { wa: { url: "6281291498070", active: true }, web: { url: "https://iamhartono.vercel.app/", active: true } }, statusTayang: true, endDate: "20 Des 2026" },
+            { id: 4, namaBisnis: "D'li Store", kategori: "Fish Shoop", ikon: "<svg class='w-5 h-5' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z' /></svg>", bgC: "bg-pink-100", colorC: "text-pink-600", gambar: "asset/logo%20dlistore.jpeg", links: { wa: { url: "6281291498070", active: true }, tokped: { url: "https://www.tokopedia.com/dlistore730", active: true } }, statusTayang: true, endDate: "5 Jan 2027" },
+            { id: 5, namaBisnis: "PT. Anugerah Mega Soraya", kategori: "Distributor Alat Kesehatan • IVD", ikon: "<svg class='w-5 h-5' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z' /></svg>", bgC: "bg-blue-100", colorC: "text-blue-400", gambar: "asset/ptanugeramegasoraya.png", links: { wa: { url: "6281310860088", active: true }, web: { url: "https://megasoraya.com/", active: true } }, statusTayang: true, endDate: "12 Mei 2027" }
         ];
 
-        const defaultBannerList = [{
-            id: 1,
-            namaPengiklan: "CIMB Niaga - KPR",
-            platform: "WEBSITE",
-            tagLabel: "PROMO SPESIAL",
-            judul1: "Diskon 50%",
-            judul2: "Kiriman ONS",
-            deskripsi: "Kirim paket kilat satu hari sampai dengan harga setengahnya. Spesialis dokumen & hewan.",
-            accentColor: "from-blue-500 to-cyan-400",
-            info1Label: "MINIMAL BERAT",
-            info1Value: "5 Kg",
-            info2Label: "PROMO BERAKHIR",
-            info2Value: "30 Nov",
-            link: "#",
-            imageUrl: "asset/iklan%20tiki.png",
-            statusTayang: true
-        }];
+        const defaultBannerList = [
+            {
+                id: 1,
+                namaPengiklan: "CIMB Niaga - KPR",
+                platform: "WEBSITE",
+                tagLabel: "REG Service",
+                judul1: "REG",
+                judul2: "Service",
+                deskripsi: "Percayakan TIKI FIERA untuk pengiriman paket MU .Dengan aman & tepat waktu",
+                accentColor: "from-rose-500 to-orange-400",
+                info1Label: "",
+                info1Value: "",
+                info2Label: "",
+                info2Value: "",
+                link: "#",
+                imageUrl: "asset/iklan%20tiki.png",
+                statusTayang: true
+            },
+            {
+                id: 2,
+                namaPengiklan: "TIKI Fiera",
+                tagLabel: "TIKI FIERA",
+                judul1: "TIKI",
+                judul2: "FIERA PONDOK KACANG",
+                deskripsi: "Kirim apa saja dan kapan saja #PakeTIKIFieraja",
+                accentColor: "from-emerald-500 to-teal-400",
+                info1Label: "",
+                info1Value: "",
+                info2Label: "",
+                info2Value: "",
+                link: "#",
+                imageUrl: "asset/iklantiki2.jpg",
+                statusTayang: true
+            }
+        ];
 
         const defaultTestiList = [
-            { id: 1, nama: "Budi (Breeder)", pesan: "Kirim reptil ke luar pulau sangat aman!", gambar: "asset/fototiki.png", status: true },
-            { id: 2, nama: "Sari (Owner Kedai)", pesan: "Layanan ONS TIKI FIERA KEBON KACANG sangat tepat waktu.", gambar: "asset/fototiki.png", status: true }
+            { id: 1, nama: "Pelanggan Reptil", pesan: "Kirim reptil ke luar pulau sangat aman. Packing rapi dan hewan sampai dengan sehat!", gambar: "asset/fototiki..png", status: true },
+            { id: 2, nama: "Owner Kedai Kopi", pesan: "Layanan ONS sangat krusial untuk suplai biji kopi kedai kami. TIKI Fiera selalu tepat waktu!", gambar: "asset/fototiki..png", status: true },
+            { id: 3, nama: "Pengirim Dokumen", pesan: "Asuransi penuh untuk pengiriman dokumen berharga membuat kami tidak pernah was-was.", gambar: "asset/fototiki..png", status: true },
+            { id: 4, nama: "Seller Frozen Food", pesan: "Frozen food kami selalu tiba dalam kondisi beku sempurna berkat standar packing TIKI Fiera.", gambar: "asset/fototiki..png", status: true }
         ];
 
         function initDataStore() {

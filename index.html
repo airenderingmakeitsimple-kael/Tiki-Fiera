@@ -268,6 +268,13 @@
             touch-action: pan-y;
         }
 
+        @media (max-width: 640px) {
+            .marquee-container {
+                mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+                -webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+            }
+        }
+
         .marquee-container:active {
             cursor: grabbing;
         }
@@ -882,11 +889,9 @@
                     <p class="text-slate-500 text-[10px] tracking-wide">Â© 2026 TIKI Fiera. All rights reserved.</p>
                     <div class="flex items-center gap-2 text-slate-500 text-[10px]">
                         <span class="opacity-50">Powered by</span>
-                        <img src="asset/ulink.png" 
-                             alt="My.U-link" 
-                             id="adminSecretDoor" 
-                             class="h-4 opacity-40 hover:opacity-100 transition-opacity cursor-pointer select-none"
-                             title="Smart Digital System">
+                        <img src="asset/ulink.png" alt="My.U-link" id="adminSecretDoor"
+                            class="h-4 opacity-40 hover:opacity-100 transition-opacity cursor-pointer select-none"
+                            title="Smart Digital System">
                     </div>
                 </div>
             </div>
@@ -1030,15 +1035,30 @@
         const defaultBannerPublic = [
             {
                 id: 1,
-                accentColor: "from-blue-500 to-cyan-400",
-                tag: "PROMO SPESIAL",
-                title: "Diskon 50% Kiriman ONS",
-                description: "Kirim paket kilat satu hari sampai dengan harga setengahnya. Spesialis dokumen & hewan.",
-                stats: [{ label: "MINIMAL BERAT", value: "5 Kg" }, { label: "PROMO BERAKHIR", value: "30 Nov" }],
+                accentColor: "from-rose-500 to-orange-400",
+                tag: "REG Service",
+                title: "REG Service",
+                description: "Percayakan TIKI FIERA untuk pengiriman paket MU .Dengan aman & tepat waktu",
+                stats: [{ label: "", value: "" }, { label: "", value: "" }],
                 image: "asset/iklan%20tiki.png",
                 waLink: "https://wa.me/6281291498070",
                 isWAActive: true,
                 mapLink: "https://maps.google.com/?q=TIKI+Fiera+Kebon+Kacang",
+                isMapActive: true,
+                webLink: "#",
+                isWebActive: false
+            },
+            {
+                id: 2,
+                accentColor: "from-emerald-500 to-teal-400",
+                tag: "TIKI FIERA",
+                title: "TIKI FIERA PONDOK KACANG",
+                description: "Kirim apa saja dan kapan saja #PakeTIKIFieraja",
+                stats: [{ label: "", value: "" }, { label: "", value: "" }],
+                image: "asset/iklantiki2.jpg",
+                waLink: "https://wa.me/6281291498070",
+                isWAActive: true,
+                mapLink: "https://maps.google.com",
                 isMapActive: true,
                 webLink: "#",
                 isWebActive: false
@@ -1047,16 +1067,19 @@
 
         // 2. Data Mitra UMKM Default
         const defaultMitraPublic = [
-            { id: 1, nama: "kebonoddie", deskripsi: "Plant shop", gambar: "asset/kebonoddie.jpg", bgC: "bg-green-100", links: { wa: { url: "6281291498070", active: true } }, isMitra: true },
-            { id: 2, nama: "PT Surya Nusantara Sentosa", deskripsi: "Logistic Service", gambar: "asset/logosuryanusantara.jpg", bgC: "bg-blue-100", links: { wa: { url: "6281291498070", active: true } }, isMitra: true },
-            { id: 3, nama: "Hartono", deskripsi: "Architecture & Interior", gambar: "asset/logohartono.png", bgC: "bg-slate-100", links: { wa: { url: "6281291498070", active: true } }, isMitra: true },
-            { id: 4, nama: "DLI Store", deskripsi: "Retail", gambar: "asset/logo%20dlistore.jpeg", bgC: "bg-pink-100", links: { wa: { url: "6281291498070", active: true } }, isMitra: true }
+            { id: 1, nama: "kebonoddie", deskripsi: "Plant shop", gambar: "asset/kebonoddie.jpg", bgC: "bg-green-100", links: { wa: { url: "6281291498070", active: true }, ig: { url: "https://www.instagram.com/kebunoddie/", active: true } }, isMitra: true },
+            { id: 2, nama: "PT. SNS", deskripsi: "Service AC mobil", gambar: "asset/logosuryanusantara.jpg", bgC: "bg-blue-100", links: { wa: { url: "6281291498070", active: true } }, isMitra: true },
+            { id: 3, nama: "iam hartono", deskripsi: "Design & Build funiture", gambar: "asset/logohartono.png", bgC: "bg-slate-100", links: { wa: { url: "6281291498070", active: true }, web: { url: "https://iamhartono.vercel.app/", active: true } }, isMitra: true },
+            { id: 4, nama: "D'li Store", deskripsi: "Fish Shoop", gambar: "asset/logo%20dlistore.jpeg", bgC: "bg-pink-100", links: { wa: { url: "6281291498070", active: true }, tokped: { url: "https://www.tokopedia.com/dlistore730", active: true } }, isMitra: true },
+            { id: 5, nama: "PT. Anugerah Mega Soraya", deskripsi: "Distributor Alat Kesehatan • IVD", gambar: "asset/ptanugeramegasoraya.png", bgC: "bg-blue-100", links: { wa: { url: "6281310860088", active: true }, web: { url: "https://megasoraya.com/", active: true } }, isMitra: true }
         ];
 
         // 3. Data Testimoni Default
         const defaultTestiPublic = [
-            { id: 1, nama: "Budi (Breeder)", pesanTestimoni: "Kirim reptil ke luar pulau sangat aman!", gambar: "asset/fototiki.png", status: true },
-            { id: 2, nama: "Sari (Owner Kedai)", pesanTestimoni: "Layanan ONS TIKI FIERA KEBON KACANG sangat tepat waktu.", gambar: "asset/fototiki.png", status: true }
+            { id: 1, nama: "Pelanggan Reptil", pesanTestimoni: "Kirim reptil ke luar pulau sangat aman. Packing rapi dan hewan sampai dengan sehat!", gambar: "asset/fototiki..png", status: true },
+            { id: 2, nama: "Owner Kedai Kopi", pesanTestimoni: "Layanan ONS sangat krusial untuk suplai biji kopi kedai kami. TIKI Fiera selalu tepat waktu!", gambar: "asset/fototiki..png", status: true },
+            { id: 3, nama: "Pengirim Dokumen", pesanTestimoni: "Asuransi penuh untuk pengiriman dokumen berharga membuat kami tidak pernah was-was.", gambar: "asset/fototiki..png", status: true },
+            { id: 4, nama: "Seller Frozen Food", pesanTestimoni: "Frozen food kami selalu tiba dalam kondisi beku sempurna berkat standar packing TIKI Fiera.", gambar: "asset/fototiki..png", status: true }
         ];
 
         let currentBannerIndex = 0;
@@ -1415,20 +1438,20 @@
                 }
 
                 const cardHTML = `
-                    <div class="premium-card w-[350px] flex-shrink-0 bg-white border border-slate-100 rounded-[32px] overflow-hidden group cursor-pointer shadow-sm">
+                    <div class="premium-card w-[280px] sm:w-[350px] flex-shrink-0 bg-white border border-slate-100 rounded-[32px] overflow-hidden group cursor-pointer shadow-sm">
                         <!-- Image Section -->
-                        <div class="relative h-48 overflow-hidden bg-slate-100">
+                        <div class="relative h-40 sm:h-48 overflow-hidden bg-slate-100">
                             ${item.gambar ?
                         `<img src="${item.gambar}" alt="${item.nama}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">` :
-                        `<div class="w-full h-full ${item.bgC || 'bg-blue-600'} flex items-center justify-center text-5xl group-hover:scale-110 transition-transform duration-500">${item.ikon || 'ðŸ“¦'}</div>`
+                        `<div class="w-full h-full ${item.bgC || 'bg-blue-600'} flex items-center justify-center text-5xl group-hover:scale-110 transition-transform duration-500">${item.ikon || '📦'}</div>`
                     }
                             <div class="absolute top-4 right-4 bg-blue-600 text-white text-[10px] font-bold px-3 py-1 rounded-full shadow-lg tracking-wider">${isMitra ? 'MITRA' : 'AD'}</div>
                         </div>
 
                         <!-- Content Section -->
-                        <div class="p-6">
-                            <h3 class="text-xl font-bold text-slate-900 mb-2 truncate">${item.nama}</h3>
-                            <p class="text-slate-500 text-sm leading-relaxed mb-6 line-clamp-2 min-h-[40px]">${item.deskripsi}</p>
+                        <div class="p-5 sm:p-6">
+                            <h3 class="text-lg sm:text-xl font-bold text-slate-900 mb-2 truncate">${item.nama}</h3>
+                            <p class="text-slate-500 text-xs sm:text-sm leading-relaxed mb-6 line-clamp-2 min-h-[40px]">${item.deskripsi}</p>
                             <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
                                 ${buttonsHTML}
                             </div>
@@ -1519,9 +1542,9 @@
 
             const door = document.getElementById('adminSecretDoor');
             if (door) {
-                door.addEventListener('click', function() {
+                door.addEventListener('click', function () {
                     secretClickCount++;
-                    
+
                     // Reset hitungan jika dalam 2 detik tidak diklik lagi
                     clearTimeout(clickTimer);
                     clickTimer = setTimeout(() => { secretClickCount = 0; }, 2000);
